@@ -1,115 +1,512 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f2f2f7" />
-    <title>Clube 14 BIS | Clima</title>
-    <style>
-      :root { font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif; color: #1d1d1f; background: #f2f2f7; }
-      * { box-sizing: border-box; }
-      body { margin: 0; min-width: 320px; background: #f2f2f7; }
-      button, a { font: inherit; }
-      .pagina { width: min(100% - 32px, 920px); margin: 0 auto; padding: 26px 0 54px; }
-      .topo { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 22px; }
-      .marca { display: flex; align-items: center; gap: 12px; }
-      .marca img { width: 124px; height: 124px; object-fit: contain; filter: drop-shadow(0 7px 10px rgba(0,0,0,.12)); }
-      h1, h2, p { margin: 0; }
-      h1 { font-size: clamp(1.42rem, 4vw, 2rem); letter-spacing: -.035em; }
-      .local { color: #6e6e73; font-size: .88rem; margin-top: 3px; }
-      .voltar { display: inline-flex; align-items: center; min-height: 42px; padding: 0 15px; border: 1px solid rgba(0,113,227,.25); border-radius: 14px; color: #0071e3; background: rgba(255,255,255,.72); text-decoration: none; font-weight: 700; transition: transform .2s, box-shadow .2s; }
-      .voltar:hover { transform: translateY(-1px); box-shadow: 0 7px 16px rgba(0,113,227,.14); }
-      .hero { display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: center; padding: 25px; border: 1px solid rgba(60,60,67,.15); border-radius: 28px; background: rgba(255,255,255,.9); box-shadow: 0 14px 34px rgba(20,25,35,.08); }
-      .condicao { color: #0071e3; font-size: 1rem; font-weight: 800; letter-spacing: .02em; }
-      .temperatura { margin-top: 3px; font-size: clamp(3.2rem, 12vw, 5.3rem); font-weight: 800; letter-spacing: -.075em; line-height: .95; }
-      .sensacao { margin-top: 9px; color: #6e6e73; font-size: 1.02rem; }
-      .icone-tempo { width: 104px; height: 104px; display: grid; place-items: center; border-radius: 50%; background: #e8f3ff; color: #0071e3; font-size: 4.3rem; }
-      .grade { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
-      .cartao { min-height: 116px; padding: 19px; border-radius: 23px; background: #e9edf5; }
-      .cartao.largo { grid-column: span 2; min-height: 104px; }
-      .rotulo { color: #6e6e73; font-size: .9rem; margin-top: 5px; }
-      .numero { color: #172434; font-size: clamp(1.45rem, 4vw, 2rem); font-weight: 800; letter-spacing: -.035em; }
-      .simbolo { color: #1976d2; font-size: 1.45rem; margin-right: 7px; vertical-align: -2px; }
-      .direcao { display: flex; align-items: center; gap: 16px; margin-top: 14px; padding: 18px; border-radius: 23px; background: #e9edf5; }
-      .rosa { display: grid; place-items: center; flex: 0 0 82px; width: 82px; height: 82px; border: 2px solid #d0d7e3; border-radius: 50%; color: #0071e3; font-size: 2rem; transform: rotate(var(--vento, 0deg)); }
-      .direcao strong { display: block; font-size: 1.25rem; }
-      .direcao p { color: #6e6e73; line-height: 1.4; margin-top: 4px; }
-      section { margin-top: 38px; }
-      section > header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-      h2 { font-size: clamp(1.45rem, 5vw, 2rem); letter-spacing: -.03em; }
-      .atualizado { color: #6e6e73; font-size: .82rem; }
-      .dias { display: grid; grid-template-columns: repeat(7, minmax(125px, 1fr)); gap: 12px; overflow-x: auto; padding-bottom: 8px; }
-      .dia { min-height: 178px; padding: 17px 14px; border: 1px solid #d3d9e4; border-radius: 22px; background: #fff; text-align: center; }
-      .dia strong { display: block; font-size: 1rem; }
-      .dia .tempo { display: block; margin: 13px 0 11px; font-size: 1.7rem; }
-      .dia small { display: block; color: #6e6e73; font-size: .84rem; line-height: 1.55; }
-      .status { display: inline-flex; align-items: center; justify-content: center; width: 100%; margin-top: 12px; padding: 7px 9px; border-radius: 999px; color: #fff; font-size: .8rem; font-weight: 800; }
-      .bom { background: #16804b; } .atencao { background: #c97a00; } .ruim { background: #d94b4b; }
-      .conforto { padding: 24px; border: 1px solid #d3d9e4; border-radius: 26px; background: #fff; }
-      .conforto h2 { color: #172434; font-size: 1.35rem; }
-      .conforto p { margin-top: 14px; color: #4f5967; font-size: 1.05rem; line-height: 1.55; }
-      .conforto b { color: #1976d2; }
-      .noticias { padding: 24px; border: 1px solid #d3d9e4; border-radius: 26px; background: #fff; }
-      .noticias header { margin-bottom: 14px; }
-      .noticias h2 { font-size: 1.35rem; }
-      .noticias a { color: #0071e3; font-size: .88rem; font-weight: 700; text-decoration: none; }
-      .lista-noticias { display: grid; gap: 10px; }
-      .noticia { display: block; padding: 14px; border-radius: 16px; background: #f2f5fa; color: #1d1d1f !important; text-decoration: none; transition: transform .2s, background .2s; }
-      .noticia:hover { background: #e8f3ff; transform: translateY(-1px); }
-      .noticia strong { display: block; font-size: .96rem; line-height: 1.35; }
-      .noticia small { display: block; margin-top: 5px; color: #6e6e73; }
-      .noticias-vazio { color: #6e6e73; font-size: .92rem; }
-      .carregando { padding: 34px; color: #6e6e73; text-align: center; }
-      @media (max-width: 560px) { .pagina { width: min(100% - 24px, 920px); padding-top: 18px; } .topo { align-items: flex-start; } .marca img { width: 103px; height: 103px; } .voltar { min-height: 38px; padding: 0 11px; font-size: .77rem; } .hero { padding: 21px; border-radius: 24px; } .icone-tempo { width: 78px; height: 78px; font-size: 3.2rem; } .grade { gap: 10px; } .cartao { min-height: 103px; padding: 15px; border-radius: 19px; } .direcao { gap: 12px; padding: 15px; } .rosa { flex-basis: 62px; width: 62px; height: 62px; font-size: 1.5rem; } section { margin-top: 30px; } }
-    </style>
-  </head>
-  <body>
-    <main class="pagina">
-      <header class="topo">
-        <div class="marca"><img src="logo14bis.png" alt="Clube 14 BIS"><div><h1>Clube 14 BIS</h1><p class="local">Condições de campo</p></div></div>
-      </header>
-      <div id="conteudo" class="carregando">Atualizando condições do campo...</div>
-    </main>
-    <script>
-      const cidade = "Clube 14 BIS";
-      const icone = (codigo) => ({0:"☀️",1:"🌤️",2:"⛅",3:"☁️",45:"🌫️",48:"🌫️",51:"🌦️",53:"🌦️",55:"🌧️",61:"🌧️",63:"🌧️",65:"🌧️",71:"❄️",80:"🌦️",81:"🌧️",82:"⛈️",95:"⛈️"}[codigo] || "🌤️");
-      const descricao = (codigo) => ({0:"Céu limpo",1:"Predominantemente limpo",2:"Parcialmente nublado",3:"Nublado",45:"Neblina",48:"Neblina",51:"Garoa",53:"Garoa",55:"Garoa",61:"Chuva fraca",63:"Chuva",65:"Chuva forte",80:"Pancadas de chuva",81:"Pancadas de chuva",82:"Pancadas fortes",95:"Trovoadas"}[codigo] || "Condições do campo");
-      const direcao = (graus) => ["Norte","Nordeste","Leste","Sudeste","Sul","Sudoeste","Oeste","Noroeste"][Math.round(graus / 45) % 8];
-      const dia = (data) => new Intl.DateTimeFormat("pt-BR", { weekday:"short", day:"2-digit" }).format(new Date(data + "T12:00:00"));
-      const status = (vento, chuva) => vento <= 15 && chuva < 30 ? ["Bom", "bom"] : vento <= 25 && chuva < 60 ? ["Atenção", "atencao"] : ["Evite voar", "ruim"];
-      function conforto(temp, uv, codigo, chanceChuva) {
-        if (chanceChuva >= 40 || codigo >= 51) return `Não esqueça o <b>guarda-chuva</b> — há possibilidade de chuva nas condições atuais.`;
-        if (uv >= 6) return `Use <b>protetor solar e boné</b> — o índice UV ficará alto hoje.`;
-        if (temp >= 30) return `Leve água e procure sombra nos períodos mais quentes do dia.`;
-        if (temp <= 17) return `Leve uma camada extra de roupa para ficar confortável no campo.`;
-        return `Condições agradáveis para aproveitar o campo.`;
-      }
-      function textoSeguro(texto) { const caixa = document.createElement("span"); caixa.textContent = texto || ""; return caixa.innerHTML; }
-      async function carregarNoticias() {
-        const lista = document.querySelector("#lista-noticias");
-        if (!lista) return;
-        const busca = "https://news.google.com/rss/search?q=clima+Brasil&hl=pt-BR&gl=BR&ceid=BR:pt-419";
-        try {
-          const endpoint = "https://api.rss2json.com/v1/api.json?rss_url=" + encodeURIComponent(busca);
-          const resposta = await fetch(endpoint);
-          const dados = await resposta.json();
-          if (dados.status !== "ok" || !dados.items?.length) throw Error("Sem notícias");
-          lista.innerHTML = dados.items.slice(0, 3).map((item) => `<a class="noticia" href="${textoSeguro(item.link)}" target="_blank" rel="noopener noreferrer"><strong>${textoSeguro(item.title)}</strong><small>${textoSeguro(item.pubDate || "Notícia recente")}</small></a>`).join("");
-        } catch {
-          lista.innerHTML = `<p class="noticias-vazio">Não foi possível carregar as manchetes agora. <a href="${busca}" target="_blank" rel="noopener noreferrer">Ver notícias recentes</a></p>`;
-        }
-      }
-      async function carregar() {
-        try {
-          const url = "https://api.open-meteo.com/v1/forecast?latitude=-20.816&longitude=-49.52&current=temperature_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,wind_speed_10m_max,uv_index_max&timezone=America%2FSao_Paulo&forecast_days=7";
-          const dados = await (await fetch(url)).json();
-          const c = dados.current, d = dados.daily, chuva = d.precipitation_probability_max[0], s = status(c.wind_speed_10m, chuva), agora = new Intl.DateTimeFormat("pt-BR", {hour:"2-digit",minute:"2-digit"}).format(new Date());
-          const dias = d.time.map((data, i) => { const st = status(d.wind_speed_10m_max[i], d.precipitation_probability_max[i]); return `<article class="dia"><strong>${dia(data)}</strong><span class="tempo">${icone(d.weather_code[i])}</span><small>${Math.round(d.temperature_2m_min[i])}° / ${Math.round(d.temperature_2m_max[i])}°</small><small>💨 ${Math.round(d.wind_speed_10m_max[i])} km/h · 🌧️ ${d.precipitation_probability_max[i]}%</small><span class="status ${st[1]}">${st[0]}</span></article>`; }).join("");
-          document.querySelector("#conteudo").outerHTML = `<div id="conteudo"><section class="hero"><div><p class="condicao">${descricao(c.weather_code).toUpperCase()}</p><p class="temperatura">${Math.round(c.temperature_2m)}°</p><p class="sensacao">Sensação térmica de ${Math.round(c.apparent_temperature)}°C</p></div><div class="icone-tempo">${icone(c.weather_code)}</div></section><div class="grade"><article class="cartao"><p class="numero"><span class="simbolo">≋</span>${Math.round(c.wind_speed_10m)} km/h</p><p class="rotulo">Vento</p></article><article class="cartao"><p class="numero"><span class="simbolo">≋</span>${Math.round(c.wind_gusts_10m)} km/h</p><p class="rotulo">Rajada</p></article><article class="cartao"><p class="numero"><span class="simbolo">☔</span>${chuva}%</p><p class="rotulo">Chuva (prob. hoje)</p></article><article class="cartao"><p class="numero"><span class="simbolo">◉</span>${(c.visibility / 1000).toFixed(1)} km</p><p class="rotulo">Visibilidade</p></article><article class="cartao largo"><p class="numero"><span class="simbolo">▲</span>${Math.round(dados.elevation || 587)} m</p><p class="rotulo">Altitude aproximada do campo</p></article></div><article class="direcao"><div class="rosa" style="--vento:${c.wind_direction_10m}deg">➤</div><div><strong>Vento vindo do ${direcao(c.wind_direction_10m)}</strong><p>${Math.round(c.wind_direction_10m)}° · velocidade atual de ${Math.round(c.wind_speed_10m)} km/h</p></div></article><section><header><h2>Próximos dias</h2><span class="atualizado">Atualizado às ${agora}</span></header><div class="dias">${dias}</div></section><section class="conforto"><h2>☀️ Conforto de campo</h2><p>${Math.round(c.temperature_2m)}°C · sensação ${Math.round(c.apparent_temperature)}°C</p><p>${conforto(c.temperature_2m, d.uv_index_max[0], c.weather_code, chuva)}</p></section><section class="noticias"><header><h2>Notícias do clima</h2><a href="https://news.google.com/search?q=clima%20Brasil&hl=pt-BR&gl=BR&ceid=BR:pt-419" target="_blank" rel="noopener noreferrer">Ver todas</a></header><div id="lista-noticias" class="lista-noticias"><p class="noticias-vazio">Carregando notícias recentes...</p></div></section></div>`;
-          carregarNoticias();
-        } catch (erro) { document.querySelector("#conteudo").innerHTML = "Não foi possível atualizar o clima agora. Verifique a conexão e tente novamente."; }
-      }
-      carregar();
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#082b4c">
+  <meta name="description" content="Painel meteorológico do campo do Clube 14 BIS.">
+  <link rel="icon" href="Icone-clima.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="Icone-clima.jpg">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:site_name" content="Clube 14 BIS">
+  <meta property="og:title" content="Clima no Clube 14 BIS">
+  <meta property="og:description" content="Condições meteorológicas e previsão do campo do Clube 14 BIS.">
+  <meta property="og:url" content="https://clube14bis.github.io/clima/">
+  <meta property="og:image" content="https://clube14bis.github.io/clima/Icone-clima.jpg">
+  <meta property="og:image:type" content="image/jpeg">
+  <meta property="og:image:width" content="2480">
+  <meta property="og:image:height" content="2480">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Clima no Clube 14 BIS">
+  <meta name="twitter:description" content="Condições meteorológicas e previsão do campo do Clube 14 BIS.">
+  <meta name="twitter:image" content="https://clube14bis.github.io/clima/Icone-clima.jpg">
+  <title>Clube 14 BIS · Clima</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#11283e;background:#eaf1f7}*{box-sizing:border-box}body{min-width:320px;margin:0;background:radial-gradient(circle at 86% 0,#cbe9ff 0,transparent 29rem),#eaf1f7}button,a{font:inherit}.pagina{width:min(100% - 32px,1060px);margin:auto;padding:28px 0 54px}.topo{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:25px}.marca{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:4px 13px;color:#11283e;text-decoration:none}.marca img{grid-row:1;width:140px;height:103px;object-fit:contain;filter:drop-shadow(0 5px 7px #1233)}h1,h2,h3,p{margin:0}h1{font-size:clamp(1.62rem,4.8vw,2.1rem);letter-spacing:-.05em}.local{margin-top:3px;color:#60758b;font-size:.86rem}.saudacao{grid-column:1/-1;margin-top:4px;color:#38637e;font-size:.83rem;font-weight:700}.saudacao time{margin-left:7px;color:#60758b;font-weight:500}.atualizacao{display:flex;align-items:center;gap:9px;color:#60758b;font-size:.82rem}.ponto{width:9px;height:9px;border-radius:50%;background:#13a66e;box-shadow:0 0 0 4px #13a622}.hero{position:relative;overflow:hidden;padding:clamp(25px,5vw,46px);border-radius:32px;color:#fff;background:linear-gradient(132deg,#072646,#096395 57%,#2da8c5);box-shadow:0 20px 40px #15466f3b}.hero:after{content:"";position:absolute;top:-130px;right:-90px;width:350px;height:350px;border:1px solid #fff3;border-radius:50%;box-shadow:0 0 0 38px #fff1,0 0 0 78px #fff1}.hero-cabeca,.hero-corpo{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:20px}.hero-cabeca{margin-bottom:28px}.condicao{display:inline-flex;align-items:center;gap:8px;font-size:.79rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.condicao:before{content:"";width:8px;height:8px;border-radius:50%;background:#fbd16a;box-shadow:0 0 12px #fbd16a}.hero-data{color:#fffc;font-size:.84rem}.temperatura{font-size:clamp(4.7rem,13vw,7.3rem);font-weight:750;letter-spacing:-.09em;line-height:.78}.sensacao{margin-top:14px;color:#fffd;font-size:1rem}.ilustracao{display:grid;width:clamp(108px,20vw,158px);height:clamp(108px,20vw,158px);place-items:center;border:1px solid #fff4;border-radius:50%;background:#fff2;font-size:clamp(4.2rem,9vw,6.4rem);backdrop-filter:blur(8px)}.tags{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:10px;margin-top:36px}.tag{min-height:32px;padding:7px 12px;border:1px solid #fff3;border-radius:999px;background:#031b333b;color:#fffe;font-size:.8rem;font-weight:650}.tag.forte{background:#fff3;color:#fff}.grade{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:15px}.cartao{min-height:137px;padding:18px;border:1px solid #7891ab33;border-radius:21px;background:#fffc;box-shadow:0 5px 16px #2043630d}.cartao-icone{display:grid;width:33px;height:33px;place-items:center;border-radius:11px;background:#deedf9;color:#1472aa;font-size:1rem}.numero{margin-top:13px;color:#11283e;font-size:clamp(1.28rem,3vw,1.67rem);font-weight:800;letter-spacing:-.045em}.rotulo{margin-top:3px;color:#647990;font-size:.78rem}section{margin-top:39px}.secao-cabeca{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:15px}h2{font-size:clamp(1.28rem,3vw,1.65rem);letter-spacing:-.05em}.secao-cabeca p{margin-top:4px;color:#667b91;font-size:.87rem}.legenda{color:#667b91;font-size:.78rem}.horas{display:grid;grid-auto-columns:minmax(103px,1fr);grid-auto-flow:column;gap:10px;overflow-x:auto;padding-bottom:8px}.hora{min-height:148px;padding:15px 11px;border:1px solid #d5e1eb;border-radius:19px;background:#fff;text-align:center}.hora.agora{border-color:#167bad;background:#e6f5fc;box-shadow:inset 0 0 0 1px #167bad}.hora strong{display:block;color:#2b435b;font-size:.8rem}.hora span{display:block;margin:10px 0;font-size:1.7rem}.hora b{color:#11283e;font-size:1.12rem;letter-spacing:-.04em}.hora small{display:block;margin-top:6px;color:#668096;font-size:.73rem}.colunas{display:grid;grid-template-columns:1.2fr .8fr;gap:15px}.painel{padding:23px;border:1px solid #d5e1eb;border-radius:25px;background:#fff}.dias{display:grid}.dia{display:grid;grid-template-columns:70px 36px 1fr auto;align-items:center;gap:8px;min-height:61px;border-bottom:1px solid #e7eef4}.dia:last-child{border:0}.dia strong{color:#2c455c;font-size:.87rem;text-transform:capitalize}.tempo{font-size:1.35rem}.barra{height:8px;border-radius:9px;background:#e3edf4;overflow:hidden}.barra span{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#58b8df,#f2bd51,#e77d49)}.minmax{color:#48647e;font-size:.82rem;white-space:nowrap}.situacao{display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(145deg,#f8fcff,#e7f4fb)}.situacao-topo,.vento{display:flex;align-items:center;gap:11px}.sinal{display:grid;width:41px;height:41px;place-items:center;border-radius:50%;background:var(--cor);color:#fff;font-weight:900}.situacao h3{font-size:1.02rem;letter-spacing:-.025em}.situacao small{display:block;margin-top:3px;color:#617a91}.situacao p{margin-top:24px;color:#435f77;font-size:.93rem;line-height:1.55}.vento{gap:16px;margin-top:20px;padding-top:18px;border-top:1px solid #d6e7f0}.rosa{display:grid;width:61px;height:61px;flex:0 0 61px;place-items:center;border:2px solid #94c9e1;border-radius:50%;color:#1472aa;font-size:1.65rem;transform:rotate(var(--vento))}.vento b{display:block;font-size:.92rem}.vento small{font-size:.79rem}.noticias{padding:23px;border:1px solid #d5e1eb;border-radius:25px;background:#fff}.noticias a{color:#2877a5;font-size:.84rem;font-weight:700;text-decoration:none}.lista-noticias{display:grid;gap:9px}.noticia{display:block;padding:14px;border-radius:16px;background:#f1f7fb;color:#183249!important;text-decoration:none;transition:background .2s}.noticia:hover{background:#e2f2fa}.noticia strong{display:block;font-size:.92rem;line-height:1.35}.noticia small{display:block;margin-top:5px;color:#6b8296;font-size:.77rem}.vazio{color:#667b91;font-size:.9rem}.rodape{display:flex;justify-content:space-between;gap:16px;margin-top:27px;color:#6d8297;font-size:.75rem}.rodape a{color:#397aa3}.erro{max-width:540px;margin:11vh auto;padding:32px;border:1px solid #d5e1eb;border-radius:25px;background:#fff;text-align:center;box-shadow:0 16px 35px #1e425f1a}.erro div{font-size:2.6rem}.erro h2{margin-top:12px}.erro p{margin-top:8px;color:#627b91;line-height:1.5}.tentar{margin-top:21px;padding:10px 16px;border:0;border-radius:11px;background:#0c6fa5;color:#fff;font-weight:750}@media(max-width:720px){.grade{grid-template-columns:repeat(2,1fr)}.colunas{grid-template-columns:1fr}}@media(max-width:500px){.pagina{width:min(100% - 22px,1060px);padding-top:17px}.atualizacao{display:none}.marca img{width:101px;height:85px}.saudacao{font-size:.79rem}.hero{border-radius:25px}.ilustracao{width:95px;height:95px}.tags{margin-top:28px}.secao-cabeca{align-items:start;flex-direction:column}section{margin-top:30px}.painel{padding:17px}.dia{grid-template-columns:58px 30px 1fr auto;gap:5px}.rodape{flex-direction:column}}@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+    /* Paleta que acompanha as condições atuais */
+    :root { --fundo: #eaf1f7; --brilho: #cbe9ff; --hero-inicio: #072646; --hero-meio: #096395; --hero-fim: #2da8c5; }
+    body { background: radial-gradient(circle at 86% 0, var(--brilho) 0, transparent 29rem), var(--fundo); transition: background .8s ease; }
+    .hero { background: linear-gradient(132deg, var(--hero-inicio), var(--hero-meio) 57%, var(--hero-fim)); transition: background .8s ease; }
+    /* Previsão diária detalhada */
+    .dias { grid-auto-columns: minmax(225px, 1fr); grid-auto-flow: column; gap: 10px; overflow-x: auto; padding-bottom: 8px; }
+    .dia { display: block; min-height: 245px; padding: 16px; border: 1px solid #d5e1eb; border-radius: 19px; background: #fafdff; }
+    .dia-cabeca { display: flex; align-items: center; justify-content: space-between; }
+    .dia-cabeca strong { font-size: .95rem; }
+    .dia .tempo { font-size: 1.7rem; }
+    .temperaturas-dia { display: flex; align-items: baseline; gap: 8px; margin: 10px 0 14px; }
+    .temperaturas-dia b { color: #102b42; font-size: 1.7rem; letter-spacing: -.055em; }
+    .temperaturas-dia span { color: #5e7890; font-size: .88rem; }
+    .detalhes-dia { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .detalhe-dia { min-height: 45px; padding: 7px 9px; border-radius: 10px; background: #eaf4fa; color: #526f85; font-size: .68rem; }
+    .detalhe-dia b { display: block; margin-top: 2px; color: #173850; font-size: .82rem; }
+    /* Destaque do relógio e saudação no cabeçalho */
+    .saudacao {
+      width: 100%;
+      margin-top: 7px;
+      color: #38637e;
+      font-size: clamp(1rem, 3.8vw, 1.16rem);
+      font-weight: 750;
+      text-align: center;
+    }
+    .saudacao time { color: #60758b; font-weight: 550; }
+    @media (max-width: 500px) { .saudacao { font-size: 1rem; } }
+    .horarios-sol { grid-column: 1 / -1; margin: -2px 0 0; color: #56738a; font-size: .8rem; text-align: center; }
+    /* Ajustes para telas compactas */
+    html, body { overflow-x: hidden; }
+    @media (max-width: 680px) {
+      .topo { align-items: flex-start; }
+      .marca { width: 100%; }
+      .atualizacao { display: none; }
+      .hero-cabeca { align-items: flex-start; }
+      .hero-data { text-align: right; }
+      .cartao { min-height: 126px; padding: 15px; }
+      .noticias, .painel { border-radius: 21px; }
+    }
+    @media (max-width: 430px) {
+      .topo { margin-bottom: 18px; }
+      .marca { grid-template-columns: 92px minmax(0, 1fr); gap: 3px 10px; }
+      .marca img { width: 92px; height: 77px; }
+      h1 { font-size: clamp(1.42rem, 7vw, 1.7rem); }
+      .local { font-size: .78rem; }
+      .saudacao { margin-top: 8px; font-size: .94rem; line-height: 1.35; }
+      .saudacao time { display: block; margin: 3px 0 0; }
+      .hero { padding: 22px; }
+      .hero-cabeca { margin-bottom: 22px; }
+      .hero-corpo { gap: 10px; }
+      .temperatura { font-size: clamp(4.25rem, 22vw, 5.4rem); }
+      .ilustracao { width: 82px; height: 82px; font-size: 3.55rem; }
+      .tags { gap: 7px; margin-top: 24px; }
+      .tag { min-height: 29px; padding: 6px 9px; font-size: .73rem; }
+      .grade { gap: 9px; margin-top: 10px; }
+      .cartao { min-height: 113px; padding: 13px; border-radius: 17px; }
+      .cartao-icone { width: 29px; height: 29px; border-radius: 9px; }
+      .numero { margin-top: 9px; font-size: 1.25rem; }
+      .rotulo { font-size: .72rem; }
+      .horas { grid-auto-columns: minmax(94px, 1fr); }
+      .hora { min-height: 135px; padding: 13px 9px; }
+      .dias { grid-auto-columns: minmax(210px, 1fr); }
+      .dia { min-height: 232px; padding: 14px; }
+      .detalhes-dia { gap: 7px; }
+      .detalhe-dia { padding: 6px 7px; }
+      .rodape { margin-top: 21px; }
+    }
+    @media (max-width: 600px) {
+      .colunas { gap: 10px; }
+      .colunas > * { min-width: 0; }
+      .colunas .painel { padding: 16px; }
+      /* No celular, deslize horizontalmente entre os dias, como nas próximas horas. */
+      .colunas .dias { grid-auto-columns: minmax(225px, 1fr); grid-auto-flow: column; grid-template-columns: none; overflow-x: auto; overflow-y: hidden; padding-bottom: 8px; }
+      .colunas .dia { min-height: 245px; }
+      .situacao { min-height: 0; }
+      .situacao p { margin-top: 17px; }
+      .situacao .vento { gap: 11px; margin-top: 16px; padding-top: 15px; }
+      .situacao .vento > span:last-child { min-width: 0; }
+      .situacao .vento small { overflow-wrap: anywhere; white-space: normal; }
+    }
+    /* Rolagem da previsão diária: funciona com gesto horizontal em telas pequenas. */
+    .colunas .painel:first-child { min-width: 0; overflow: hidden; }
+    .condicoes-principais { margin-top: 15px; }
+    .extremos-hoje { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 10px; color: #fff; font-size: .88rem; }
+    .extremos-hoje span { padding: 5px 9px; border: 1px solid #fff4; border-radius: 999px; background: #001b2b38; }
+    .extremos-hoje b { margin-left: 4px; font-size: .96rem; }
+    .rosa svg { width: 31px; height: 31px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    .cartao-direcao { display: flex; flex-direction: column; justify-content: center; }
+    /* Ajuste dos Meteocons de nascer e pôr do sol. */
+    .cartao-icone.solar { display: grid; width: 48px; height: 48px; place-items: center; overflow: visible; }
+    /* Maior contraste para os ícones da previsão diária. */
+    .dia { background: #fff; }
+    .dia .tempo { width: 64px; height: 64px; border: 1px solid #cfe2eb; border-radius: 18px; background: linear-gradient(145deg, #f6fcff, #e2f1f7); box-shadow: 0 5px 12px #163f5d10; }
+    .dia .tempo .meteocon { width: 56px; height: 56px; }
+    .dia-cabeca { gap: 10px; }
+    .cartao-icone.solar.nascer { background: linear-gradient(135deg, #fff8d6, #ffe19a); }
+    .cartao-icone.solar.por { background: linear-gradient(135deg, #ffe3bf, #ffc889); }
+    .cartao-icone.solar::before, .cartao-icone.solar::after { content: none !important; }
+    .cartao-icone.solar .meteocon { width: 44px; height: 44px; max-width: none; max-height: none; transform: translateZ(0); will-change: transform; }
+    /* Painel aeronáutico — leitura clara, sem o antigo bloco escuro de vento. */
+    .aviacao { padding: 0; overflow: hidden; border: 1px solid #c6dfe9; border-radius: 25px; background: linear-gradient(145deg, #fafdff, #e8f5fa); box-shadow: 0 8px 22px #1d54700f; }
+    .aviacao-cabeca { padding: 20px 22px 16px; border-bottom: 1px solid #d5e8f0; background: linear-gradient(90deg, #fafdff, #e9f6fb); }
+    .aviacao-cabeca h2 { display: flex; align-items: center; gap: 9px; color: #123b55; }
+    .aviacao-cabeca h2::before { width: 10px; height: 10px; border-radius: 50%; background: #2e9ac2; box-shadow: 0 0 0 5px #2e9c221a; content: ""; }
+    .aviacao-cabeca p { color: #59778a; }
+    .aviacao-grade { display: block; margin: 0; padding: 16px 22px 8px; }
+    .av-info { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+    .av-item { min-height: 82px; padding: 13px; border: 1px solid #d6e8ef; border-radius: 14px; background: #fff; box-shadow: 0 3px 9px #1d54700a; }
+    .av-item small { color: #6a8798; font-weight: 700; letter-spacing: .025em; text-transform: uppercase; }
+    .av-item b { color: #173d57; font-size: .91rem; line-height: 1.3; }
+    .aviacao .vento-av { display: none; }
+    .metar-leitura { margin: 8px 22px 0; padding: 14px; border-color: #cce3ed; border-radius: 16px; background: #fff; }
+    .metar-dados { grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 0; }
+    .metar-dado { min-height: 58px; border-radius: 11px; background: #f0f8fb; }
+    .metar-bruto { background: #e9f4f8; color: #29536b; }
+    .av-alerta { margin: 14px 22px 22px; border: 1px solid #f1dfaa; background: #fff9e8; color: #75541a; }
+    @media (max-width: 760px) { .av-info { grid-template-columns: repeat(2, minmax(0, 1fr)); } .metar-dados { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 440px) { .aviacao-cabeca, .aviacao-grade { padding-right: 16px; padding-left: 16px; } .metar-leitura { margin-right: 16px; margin-left: 16px; } .av-alerta { margin-right: 16px; margin-left: 16px; } }
+    .cartao-vento-completo { display: grid; grid-column: span 2; grid-template-columns: auto 1fr; align-items: center; column-gap: 13px; row-gap: 8px; }
+    .vento-av { justify-content: center; padding: 0; background: transparent; }
+    .cartao-vento-completo .direcao-vento { min-width: 0; }
+    .cartao-vento-completo .direcao-vento b { display: block; color: #11283e; font-size: 1rem; }
+    .cartao-vento-completo .direcao-vento small { display: block; margin-top: 3px; color: #667f94; font-size: .76rem; }
+    .dados-vento { display: grid; grid-column: 1 / -1; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dados-vento span { padding: 8px 9px; border-radius: 10px; background: #eaf4fa; color: #607b91; font-size: .7rem; }
+    .dados-vento b { display: block; margin-top: 2px; color: #173850; font-size: .9rem; }
+    .mini-bussola { display: grid; width: 42px; height: 42px; place-items: center; border: 2px solid #94c9e1; border-radius: 50%; color: #1472aa; transform: rotate(var(--vento)); }
+    .mini-bussola svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .cartao-direcao .numero { margin-top: 10px; font-size: 1.08rem; }
+    .colunas .dias { display: flex; width: 100%; gap: 10px; overflow-x: auto; overflow-y: hidden; padding: 0 0 14px; scroll-snap-type: x mandatory; scroll-padding-inline: 1px; scrollbar-color: #5e9fbd #e8f2f7; scrollbar-width: thin; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; touch-action: pan-x; }
+    .colunas .dia { flex: 0 0 min(225px, 78vw); scroll-snap-align: start; }
+    .colunas .dias::-webkit-scrollbar { height: 7px; }
+    .colunas .dias::-webkit-scrollbar-track { border-radius: 99px; background: #e8f2f7; }
+    .colunas .dias::-webkit-scrollbar-thumb { border-radius: 99px; background: #5e9fbd; }
+    /* Logo ampliada em 20% */
+    .marca img { width: 168px; height: 124px; }
+    @media (max-width: 500px) { .marca img { width: 121px; height: 102px; } }
+    @media (max-width: 430px) { .marca img { width: 110px; height: 92px; } }
+    /* Marca animada conforme o clima */
+    .ilustracao { position: relative; overflow: hidden; isolation: isolate; font-size: 0; }
+    .ilustracao.clima-logo { position: relative; overflow: hidden; isolation: isolate; background: linear-gradient(#77cdf3, #dff5ff); }
+    .ilustracao.clima-logo::after { z-index: 3; }
+    .clima-logo .logo-card { display: none; }
+    .hero::before { position: absolute; inset: 0; z-index: 0; content: ""; background: url("clube14bis.png") center 59% / cover no-repeat; opacity: .48; filter: saturate(.9) contrast(1.05); pointer-events: none; transition: filter .8s ease, opacity .8s ease; }
+    .hero.noite::before { filter: brightness(.35) saturate(.6); opacity: .55; }
+    .hero.chuva::before, .hero.neblina::before { filter: grayscale(.55) brightness(.67); opacity: .5; }
+    .hero::after { z-index: 0; }
+    .hero.chuva::after { inset: 0; width: auto; height: auto; border: 0; border-radius: 0; background: repeating-linear-gradient(112deg, transparent 0 17px, rgba(235,247,255,.62) 18px 20px, transparent 21px 37px); box-shadow: none; animation: chuva 1s linear infinite; }
+    @media (max-width: 500px) { .hero::before { background-position: center center; opacity: .43; } }
+    /* Foto do clube sem ícone circular ou anéis decorativos */
+    .hero::after, .hero.chuva::after { display: none; }
+    .hero .ilustracao { display: none; }
+    .tags.info-abaixo { position: relative; z-index: 1; margin-top: 14px; padding: 12px; border: 1px solid #d4e1ea; border-radius: 18px; background: rgba(255,255,255,.9); box-shadow: 0 6px 16px rgba(32,67,99,.06); }
+    .tags.info-abaixo .tag { border-color: #d3e2ed; background: #edf6fb; color: #36566e; }
+    .resumo-operacional { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin-top: 14px; padding: 12px; border: 1px solid #d4e1ea; border-radius: 18px; background: rgba(255,255,255,.94); box-shadow: 0 6px 16px rgba(32,67,99,.06); }
+    .resumo-operacional .tags { display: flex; flex: 1 1 440px; flex-wrap: wrap; gap: 9px; margin: 0; }
+    .resumo-operacional .tags.info-abaixo { padding: 0; border: 0; background: transparent; box-shadow: none; }
+    .resumo-operacional .tag { border-color: #d3e2ed; background: #edf6fb; color: #36566e; }
+    .atualizacao-card { margin-left: auto; color: #627b91; font-size: .8rem; }
+    @media (max-width: 600px) { .atualizacao-card { width: 100%; margin-left: 0; text-align: center; } }
+    /* Foto preenche todo o painel, sem faixas nas bordas */
+    .hero { min-height: 410px; }
+    .hero::before { background-size: cover; background-position: center center; opacity: 1; filter: none; }
+    .hero-cabeca, .hero-corpo { text-shadow: 0 2px 8px rgba(0,0,0,.65); }
+    @media (max-width: 600px) { .hero { min-height: 350px; } }
+    /* Efeitos meteorológicos animados sobre a foto do clube */
+    :root[data-clima] .hero::after { display: block; inset: 0; z-index: 0; width: auto; height: auto; border: 0; border-radius: 0; box-shadow: none; pointer-events: none; }
+    :root[data-clima="sol"] .hero::after { background: radial-gradient(circle at 81% 19%, rgba(255,231,116,.98) 0 7%, rgba(255,221,91,.47) 8% 11%, transparent 12%); animation: brilho-sol 3s ease-in-out infinite; }
+    :root[data-clima="nublado"] .hero::after { background: radial-gradient(ellipse at 18% 18%, rgba(72,85,96,.66) 0 14%, transparent 15%), radial-gradient(ellipse at 37% 12%, rgba(87,102,113,.66) 0 17%, transparent 18%), radial-gradient(ellipse at 69% 20%, rgba(71,84,95,.62) 0 19%, transparent 20%); animation: nuvens-painel 12s ease-in-out infinite alternate; }
+    :root[data-clima="chuva"] .hero::after { background: linear-gradient(rgba(42,58,72,.46),rgba(54,75,90,.38)), repeating-linear-gradient(112deg, transparent 0 17px, rgba(234,247,255,.8) 18px 20px, transparent 21px 37px); animation: chuva 1s linear infinite; }
+    :root[data-clima="neblina"] .hero::after { background: linear-gradient(110deg, rgba(235,242,243,.42), transparent 35%, rgba(255,255,255,.42) 55%, transparent 78%), linear-gradient(rgba(120,135,141,.28),rgba(208,218,217,.32)); background-size: 220% 100%,100% 100%; animation: nevoa-painel 7s linear infinite alternate; }
+    :root[data-clima="noite"] .hero::before { filter: brightness(.34) saturate(.58); }
+    :root[data-clima="noite"] .hero::after { background: radial-gradient(circle at 78% 17%, #fff5c0 0 6%, rgba(255,245,192,.32) 7% 10%, transparent 11%), radial-gradient(circle at 17% 16%, #fff 0 1px, transparent 1.5px), radial-gradient(circle at 38% 31%, #fff 0 1px, transparent 1.5px), radial-gradient(circle at 61% 11%, #fff 0 1px, transparent 1.5px), radial-gradient(circle at 88% 45%, #fff 0 1px, transparent 1.5px), linear-gradient(rgba(2,16,39,.5),rgba(5,27,53,.36)); animation: estrelas 3s ease-in-out infinite alternate; }
+    @keyframes brilho-sol { 50% { filter: brightness(1.2); transform: scale(1.025); } }
+    @keyframes nuvens-painel { to { background-position: 16px 4px, -12px 8px, 10px 0; } }
+    @keyframes nevoa-painel { to { background-position: 100% 0,0 0; } }
+    @keyframes estrelas { to { opacity: .72; } }
+    @media (prefers-reduced-motion: reduce) { :root[data-clima] .hero::after { animation: none !important; } }
+    /* Cena meteorológica em camadas sobre a fotografia */
+    .camadas-clima { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+    .camadas-clima span { position: absolute; inset: 0; opacity: 0; transition: opacity .8s ease; }
+    .raios-sol { background: conic-gradient(from 35deg at 81% 18%, rgba(255,239,151,.18), transparent 8deg 24deg, rgba(255,239,151,.12) 25deg 34deg, transparent 35deg 57deg, rgba(255,239,151,.15) 58deg 67deg, transparent 68deg); mix-blend-mode: screen; transform-origin: 81% 18%; }
+    .nuvens-distantes { inset: -10% -12% 40% !important; background: radial-gradient(ellipse at 20% 65%, rgba(61,76,88,.7) 0 18%, transparent 19%), radial-gradient(ellipse at 46% 40%, rgba(76,91,102,.7) 0 23%, transparent 24%), radial-gradient(ellipse at 78% 65%, rgba(61,76,88,.68) 0 20%, transparent 21%); filter: blur(2px); }
+    .chuva-frente { background-image: repeating-linear-gradient(112deg, transparent 0 14px, rgba(235,249,255,.82) 15px 17px, transparent 18px 32px), repeating-linear-gradient(112deg, transparent 0 27px, rgba(184,220,240,.72) 28px 30px, transparent 31px 52px); background-size: 53px 75px, 87px 108px; }
+    .neblina-frente { background: linear-gradient(90deg, transparent 0 10%, rgba(245,250,249,.46) 24%, transparent 43% 55%, rgba(255,255,255,.38) 70%, transparent 88%), linear-gradient(90deg, rgba(220,230,229,.25), transparent 65%); background-size: 210% 100%, 170% 100%; filter: blur(7px); }
+    .ceu-noturno { background: radial-gradient(circle at 80% 18%, #fff5c0 0 5%, rgba(255,245,192,.42) 6% 9%, transparent 10%), radial-gradient(circle at 12% 18%, #fff 0 1px, transparent 1.6px), radial-gradient(circle at 30% 37%, #fff 0 1px, transparent 1.6px), radial-gradient(circle at 54% 11%, #fff 0 1px, transparent 1.6px), radial-gradient(circle at 70% 42%, #fff 0 1px, transparent 1.6px), radial-gradient(circle at 92% 59%, #fff 0 1px, transparent 1.6px), linear-gradient(rgba(3,15,37,.58),rgba(6,26,53,.33)); }
+    :root[data-clima="sol"] .raios-sol { opacity: 1; animation: girar-raios 22s linear infinite; }
+    :root[data-clima="sol"] .hero::after { display: block; background: radial-gradient(circle at 82% 18%, #fff7bc 0 5%, rgba(255,225,103,.72) 6% 10%, transparent 11%), repeating-conic-gradient(from 0deg at 82% 18%, rgba(255,235,145,.46) 0deg 3deg, transparent 3deg 15deg); mix-blend-mode: screen; opacity: .9; transform-origin: 82% 18%; animation: raios-fortes 16s linear infinite; }
+    :root[data-clima="sol"] .raios-sol { display: none; }
+    :root[data-clima="sol"] .hero::after { background: radial-gradient(circle at 82% 18%, #fff8b0 0 5%, #ffd928 6% 9%, rgba(255,207,22,.42) 10% 14%, transparent 15%); mix-blend-mode: normal; opacity: 1; animation: none; }
+    :root[data-clima="nublado"] .nuvens-distantes { opacity: .8; animation: deriva-nuvens 19s ease-in-out infinite alternate; }
+    :root[data-clima="chuva"] .nuvens-distantes { opacity: .9; animation: deriva-nuvens 11s ease-in-out infinite alternate; }
+    :root[data-clima="chuva"] .chuva-frente { opacity: .86; animation: cair-chuva .72s linear infinite; }
+    :root[data-clima="neblina"] .neblina-frente { opacity: .9; animation: deriva-neblina 9s linear infinite alternate; }
+    :root[data-clima="noite"] .ceu-noturno { opacity: 1; animation: pulsar-estrelas 3.6s ease-in-out infinite alternate; }
+    @keyframes girar-raios { to { transform: rotate(360deg); } }
+    @keyframes deriva-nuvens { to { transform: translateX(9%); } }
+    @keyframes cair-chuva { to { background-position: -22px 48px, 17px 74px; } }
+    @keyframes deriva-neblina { to { background-position: 100% 0, -70% 0; } }
+    @keyframes pulsar-estrelas { to { opacity: .74; } }
+    @keyframes raios-fortes { to { transform: rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .camadas-clima span { animation: none !important; } }
+    /* Ícones meteorológicos SVG animados */
+    .weather-svg { width: 1.8em; height: 1.8em; overflow: visible; vertical-align: middle; }
+    .meteocon { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .tempo .meteocon, .hora .meteocon { width: 1.8em; height: 1.8em; margin: auto; }
+    .cartao-icone .meteocon { width: 28px; height: 28px; }
+    .detalhe-dia .meteocon { display: inline-block; width: 18px; height: 18px; margin: -2px 4px -4px 0; vertical-align: middle; }
+    .cartao-icone.solar::before, .cartao-icone.solar::after { content: none; }
+    .weather-svg .sun-core { fill: #edc951; } .weather-svg .sun-rays { stroke: #edc951; stroke-width: 2.5; stroke-linecap: round; animation: svg-girar 12s linear infinite; transform-origin: 16px 16px; }
+    .weather-svg .cloud { fill: #00a0b0; } .weather-svg .cloud-light { fill: #00cee3; } .weather-svg .rain { stroke: #1687b6; stroke-width: 2; stroke-linecap: round; animation: svg-chuva 1s ease-in-out infinite; }
+    .weather-svg .mist { stroke: #7794a4; stroke-width: 2.4; stroke-linecap: round; animation: svg-nevoa 2.4s ease-in-out infinite alternate; }
+    .weather-svg .bolt { fill: #edc951; animation: svg-raio 1.8s ease-in-out infinite; }
+    @keyframes svg-girar { to { transform: rotate(360deg); } } @keyframes svg-chuva { 50% { transform: translateY(2px); opacity: .45; } } @keyframes svg-nevoa { to { transform: translateX(3px); opacity: .5; } } @keyframes svg-raio { 50% { opacity: .35; } }
+    @media (prefers-reduced-motion: reduce) { .weather-svg * { animation: none !important; } }
+    /* Painel aeronáutico */
+    .aviacao { margin-top: 15px; padding: 22px; border: 1px solid #b9d5e4; border-radius: 25px; background: linear-gradient(135deg,#f6fbfe,#e3f2f9); color: #183b55; }
+    .metar-leitura{margin-top:15px;padding:14px 15px;border:1px solid #c9e1ed;border-radius:16px;background:#fff;color:#183b55}.metar-leitura-cabeca{display:flex;align-items:baseline;justify-content:space-between;gap:10px}.metar-leitura h3{font-size:.95rem}.metar-status{font-size:.72rem;font-weight:800;color:#477288}.metar-dados{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:11px}.metar-dado{padding:9px;border-radius:10px;background:#eff8fc}.metar-dado small{display:block;color:#628197;font-size:.67rem}.metar-dado b{display:block;margin-top:3px;font-size:.84rem}.metar-bruto{margin:11px 0 0;padding:9px 10px;border-radius:9px;background:#0c3a58;color:#e7f7ff;font:700 .7rem/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;white-space:normal;overflow-wrap:anywhere}.metar-nota{margin:8px 0 0;color:#638096;font-size:.7rem;line-height:1.35}@media(max-width:650px){.metar-dados{grid-template-columns:1fr 1fr}}
+    .aviacao .metar-link { display: none !important; }
+    .aviacao-cabeca { display:flex; align-items:start; justify-content:space-between; gap:14px; }.aviacao h2{font-size:1.35rem}.aviacao-cabeca p{margin-top:4px;color:#617d91;font-size:.84rem}.metar-link{display:inline-flex;padding:9px 12px;border-radius:10px;background:#176b97;color:#fff;text-decoration:none;font-size:.78rem;font-weight:800;white-space:nowrap}.aviacao-grade{display:grid;grid-template-columns:1.1fr .9fr;gap:14px;margin-top:18px}.av-info{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.av-item{padding:12px;border:1px solid #d5e6ef;border-radius:13px;background:#fff}.av-item small{display:block;color:#698399;font-size:.7rem}.av-item b{display:block;margin-top:4px;font-size:.88rem}.vento-av{display:flex;align-items:center;gap:18px;padding:15px;border-radius:18px;background:#0d456a;color:#fff}.bussola{position:relative;width:96px;height:96px;flex:0 0 96px;border:2px solid #9bd6ed;border-radius:50%;background:#082e4a}.bussola span{position:absolute;color:#d8f5ff;font-size:.64rem;font-weight:800}.bussola .n{top:5px;left:43px}.bussola .s{bottom:5px;left:44px}.bussola .l{top:42px;left:7px}.bussola .o{top:42px;right:7px}.ponteiro{position:absolute;top:16px;left:45px;width:4px;height:34px;border-radius:4px;background:#ffdc69;transform-origin:50% 32px;box-shadow:0 0 8px #ffdc69}.ponteiro:after{position:absolute;top:-7px;left:-5px;border-right:7px solid transparent;border-bottom:12px solid #ffdc69;border-left:7px solid transparent;content:""}.biruta{display:grid;width:58px;height:42px;place-items:center}.biruta svg{width:58px;transform:rotate(var(--vento));transform-origin:center}.vento-av b{display:block}.vento-av small{display:block;margin-top:4px;color:#c7e5f3;font-size:.78rem}.av-alerta{margin-top:14px;padding:11px 13px;border-radius:12px;background:#fff5d8;color:#715217;font-size:.82rem;line-height:1.45}@media(max-width:650px){.aviacao{padding:17px}.aviacao-cabeca{flex-direction:column}.aviacao-grade{grid-template-columns:1fr}.av-info{grid-template-columns:1fr 1fr}.metar-link{width:100%;justify-content:center}}
+    /* Card de condições do campo */
+    .resumo-operacional { display: grid; grid-template-columns: 1fr auto; gap: 12px; margin-top: 16px; padding: 18px; border: 1px solid #b7d7e8; border-radius: 22px; background: linear-gradient(135deg, #e8f7fc, #d7eaf6); box-shadow: 0 10px 24px rgba(31,92,128,.12); }
+    .resumo-operacional::before { content: "Condições do campo"; align-self: center; color: #163c5a; font-size: 1.05rem; font-weight: 800; letter-spacing: -.025em; }
+    .resumo-operacional .tags { grid-column: 1 / -1; display: flex; flex: 1 1 auto; flex-wrap: wrap; gap: 9px; margin: 0; }
+    .resumo-operacional .tag { min-height: 37px; padding: 8px 12px; border: 1px solid #c5dfea; border-radius: 12px; background: rgba(255,255,255,.82); color: #315a75; font-size: .8rem; box-shadow: 0 2px 5px rgba(38,91,120,.06); }
+    .resumo-operacional .tag.forte { border-color: #1a719e; background: #176b97; color: #fff; }
+    .resumo-operacional .atualizacao-card { align-self: center; margin: 0; color: #587990; font-size: .78rem; white-space: nowrap; }
+    @media (max-width: 600px) { .resumo-operacional { grid-template-columns: 1fr; padding: 16px; } .resumo-operacional .atualizacao-card { grid-row: 2; width: auto; text-align: left; } .resumo-operacional .tag { flex: 1 1 145px; } }
+    .cartao-icone.solar { position: relative; overflow: hidden; background: #fff1c8; }
+    .cartao-icone.solar::before { position: absolute; width: 12px; height: 12px; border: 2px solid #d68116; border-radius: 50%; content: ""; }
+    .cartao-icone.solar::after { position: absolute; right: 7px; bottom: 8px; left: 7px; height: 2px; background: #d68116; content: ""; }
+    .cartao-icone.solar.nascer::before { transform: translateY(-2px); }
+    .cartao-icone.solar.por::before { transform: translateY(4px); }
+    .clima-logo::before, .clima-logo::after { position: absolute; content: ""; z-index: 1; }
+    .clima-logo.sol::before { top: 12%; right: 12%; width: 31%; aspect-ratio: 1; border-radius: 50%; background: #ffe174; box-shadow: 0 0 19px 7px rgba(255,222,116,.62); animation: pulsar-sol 3s ease-in-out infinite; }
+    .clima-logo.nublado, .clima-logo.chuva { background: linear-gradient(#6c8498, #bacbd6); }
+    .clima-logo.nublado::before, .clima-logo.chuva::before { top: 12%; left: 1%; width: 84%; height: 24%; border-radius: 50% 48% 42% 40%; background: #ced9df; box-shadow: 22px -8px 0 5px #b9c7d0, 44px 5px 0 3px #d7e0e4; opacity: .9; animation: nuvem 7s ease-in-out infinite alternate; }
+    .clima-logo.neblina { background: linear-gradient(#93a3ab, #d7e0df); }
+    .clima-logo.neblina::before { inset: 32% -20% auto; height: 11%; background: rgba(255,255,255,.64); box-shadow: 0 24px 0 rgba(255,255,255,.45), 0 48px 0 rgba(255,255,255,.35); animation: nevoa 5s linear infinite alternate; }
+    .clima-logo.noite { background: radial-gradient(circle at 69% 20%, #526ea1 0 2%, transparent 2.5%), radial-gradient(circle at 24% 18%, #fff 0 1.2%, transparent 1.8%), radial-gradient(circle at 78% 46%, #fff 0 1%, transparent 1.7%), linear-gradient(#06172f, #16426b); }
+    .clima-logo.noite::before { top: 13%; right: 15%; width: 29%; aspect-ratio: 1; border-radius: 50%; background: #fff3be; box-shadow: 0 0 16px 4px #fff3be88; animation: lua 4s ease-in-out infinite; }
+    .gotas { position: absolute; inset: 0; z-index: 2; opacity: 0; }
+    .chuva .gotas { opacity: 1; background: repeating-linear-gradient(112deg, transparent 0 13px, rgba(225,245,255,.9) 14px 16px, transparent 17px 29px); animation: chuva 1s linear infinite; }
+    @keyframes pulsar-sol { 50% { transform: scale(1.08); box-shadow: 0 0 26px 10px rgba(255,222,116,.74); } }
+    @keyframes nuvem { to { transform: translateX(11px); } }
+    @keyframes nevoa { to { transform: translateX(18px); } }
+    @keyframes lua { 50% { transform: translateY(-4px); } }
+    @keyframes chuva { to { background-position: -18px 34px; } }
+    @media (prefers-reduced-motion: reduce) { .clima-logo::before, .clima-logo .gotas { animation: none !important; } }
+    /* Sistema unificado de cards e ícones SVG. */
+    :root { --raio-card: 24px; --espaco-card: 22px; --tamanho-icone: 52px; }
+    .cartao, .hora, .dia, .av-item, .metar-dado, .noticia { border-radius: var(--raio-card); }
+    .cartao { min-height: 178px; padding: var(--espaco-card); border-color: #cfdfeb; background: linear-gradient(145deg, #ffffff, #f5fafd); box-shadow: 0 10px 24px #163f5d12; }
+    .cartao-icone { width: var(--tamanho-icone); height: var(--tamanho-icone); border-radius: 16px; background: #eaf5fa; }
+    .cartao-icone .meteocon { width: 42px; height: 42px; }
+    .cartao-icone.solar { width: var(--tamanho-icone); height: var(--tamanho-icone); border-radius: 16px; }
+    .cartao-icone.solar .meteocon { width: 42px; height: 42px; }
+    .cartao .numero { margin-top: 15px; font-size: clamp(1.35rem, 3.1vw, 1.72rem); }
+    .cartao .rotulo { margin-top: 5px; font-size: .82rem; line-height: 1.35; }
+    .hora { min-height: 174px; padding: 18px 13px; border-color: #cfdfeb; border-radius: var(--raio-card); box-shadow: 0 6px 16px #163f5d0c; }
+    .hora span { display: grid; height: 48px; margin: 12px 0; place-items: center; }
+    .hora .meteocon, .tempo .meteocon { width: 44px; height: 44px; }
+    .dia { min-height: 274px; padding: 19px; border-color: #cfdfeb; border-radius: var(--raio-card); box-shadow: 0 6px 16px #163f5d0a; }
+    .dia .tempo { display: grid; width: 50px; height: 50px; place-items: center; }
+    .detalhe-dia { min-height: 50px; padding: 9px 10px; border-radius: 13px; }
+    .detalhe-dia .meteocon { width: 20px; height: 20px; }
+    .painel, .noticias { border-radius: calc(var(--raio-card) + 2px); }
+    .av-item { min-height: 94px; border-radius: 16px; }
+    .metar-dado { min-height: 66px; border-radius: 14px; }
+    .noticia { min-height: 76px; padding: 17px; }
+    @media (max-width: 600px) { :root { --espaco-card: 18px; --tamanho-icone: 48px; } .cartao { min-height: 166px; } .cartao-icone .meteocon, .cartao-icone.solar .meteocon { width: 39px; height: 39px; } .hora { min-height: 164px; } .dia { min-height: 264px; padding: 17px; } }
+    /* Cabeçalho centralizado. */
+    .topo { position: relative; justify-content: center; min-height: 155px; }
+    .marca { display: flex; flex-direction: column; align-items: center; gap: 0; width: 100%; }
+    .marca img { grid-row: auto; }
+    .marca > span { display: block; }
+    .local { margin-top: 5px; font-size: 1.14rem; font-weight: 750; text-align: center; }
+    .saudacao { margin-top: 8px; text-align: center; }
+    .atualizacao { position: absolute; top: 10px; right: 0; }
+    @media (max-width: 680px) { .topo { min-height: 0; } .atualizacao { display: none; } }
+    /* Degradê global que acompanha a paleta de dia, tarde, chuva e noite. */
+    body { background: radial-gradient(ellipse at 15% 0, color-mix(in srgb, var(--brilho) 88%, #fff 12%) 0, transparent 46%), radial-gradient(ellipse at 90% 18%, var(--brilho) 0, transparent 48%), linear-gradient(165deg, var(--brilho) 0%, var(--fundo) 56%, color-mix(in srgb, var(--fundo) 82%, #0b2741 18%) 100%); background-attachment: fixed; }
+    :root[data-clima="noite"] .marca, :root[data-clima="noite"] .saudacao, :root[data-clima="noite"] .atualizacao { color: #e5f4ff; }
+    :root[data-clima="noite"] .saudacao time, :root[data-clima="noite"] .atualizacao { color: #b7d3e7; }
+    :root[data-clima="noite"] .ponto { box-shadow: 0 0 0 4px #13a62255; }
+    /* Blocos do cabeçalho no mesmo padrão arredondado dos cards. */
+    .marca img { padding: 9px 15px; border: 1px solid #d8e7ef; border-radius: 24px; background: #fff; box-shadow: 0 8px 20px #143e5b18; }
+    .saudacao { width: auto; margin-top: 12px; padding: 10px 16px; border: 1px solid #d6e6ee; border-radius: 16px; background: #fffdf9; color: #294b62; box-shadow: 0 6px 16px #143e5b12; }
+    .saudacao time { color: #587287; }
+    :root[data-clima="noite"] .saudacao, :root[data-clima="noite"] .saudacao time { color: #294b62; }
+    @media (max-width: 430px) { .marca img { padding: 7px 11px; border-radius: 20px; } .saudacao { padding: 9px 12px; } }
+    /* Card principal estático: somente a foto real e as informações meteorológicas. */
+    .hero::before { transition: none; }
+    .hero::after { display: none !important; }
+    .hero .camadas-clima, .hero .ilustracao { display: none !important; }
+    :root[data-clima="sol"] .hero::before { background-image: url("Imagens-14BIS/sol.PNG"); }
+    :root[data-clima="nublado"] .hero::before { background-image: url("Imagens-14BIS/nublado.PNG"); }
+    :root[data-clima="chuva"] .hero::before { background-image: url("Imagens-14BIS/chuva.PNG"); }
+    :root[data-clima="neblina"] .hero::before { background-image: url("Imagens-14BIS/neblina.PNG"); }
+    :root[data-clima="noite"] .hero::before { background-image: url("Imagens-14BIS/noite.PNG"); }
+    :root[data-clima] .hero::before { filter: none !important; }
+    /* Contraste e escala finais para os SVGs dos próximos dias. */
+    .dia { background: #fff; }
+    .dia .tempo { display: grid; width: 64px; height: 64px; place-items: center; border: 1px solid #cfe2eb; border-radius: 18px; background: linear-gradient(145deg, #f6fcff, #e2f1f7); box-shadow: 0 5px 12px #163f5d10; }
+    .dia .tempo .meteocon { width: 56px; height: 56px; }
+    .dia-cabeca { gap: 10px; }
+    @media (max-width: 600px) { .dia .tempo { width: 60px; height: 60px; } .dia .tempo .meteocon { width: 52px; height: 52px; } }
+    .dia .tempo { background: radial-gradient(circle at 50% 42%, #fff 0 38%, #d2eaf4 100%); }
+    .dia .tempo .meteocon { filter: drop-shadow(0 1px 1px #0b3b5899) drop-shadow(0 0 1px #0b3b5899); }
+    /* Painel aeronáutico: cartões com ícones e biruta em fundo claro. */
+    .aviacao-grade { padding-bottom: 14px; }
+    .av-item { display: grid; grid-template-columns: 38px 1fr; align-items: center; column-gap: 10px; min-height: 98px; }
+    .av-item .av-icon { grid-row: 1 / span 2; width: 38px; height: 38px; padding: 4px; border-radius: 12px; background: #e5f3f8; }
+    .av-item small { align-self: end; }
+    .av-item b { align-self: start; }
+    .aviacao .vento-av { display: grid; grid-template-columns: 82px 1fr; align-items: center; gap: 14px; margin: 0 22px 12px; padding: 14px; border: 1px solid #cce4ed; border-radius: 18px; background: linear-gradient(135deg, #f6fcff, #e4f3f8); }
+    .aviacao .bussola { width: 70px; height: 70px; flex-basis: 70px; border-color: #8fc6db; background: #fff; }
+    .aviacao .bussola span { color: #2b6581; font-size: .57rem; }
+    .aviacao .bussola .n { top: 4px; left: 31px; }.aviacao .bussola .s { bottom: 4px; left: 32px; }.aviacao .bussola .l { top: 30px; left: 5px; }.aviacao .bussola .o { top: 30px; right: 5px; }
+    .aviacao .ponteiro { top: 12px; left: 32px; height: 25px; transform-origin: 50% 23px; }
+    .aviacao .biruta { grid-column: 2; grid-row: 1; width: 76px; height: 56px; justify-self: end; }
+    .aviacao .biruta .meteocon { width: 76px; height: 56px; }
+    .metar-dado { display: grid; grid-template-columns: 27px 1fr; align-items: center; column-gap: 7px; }
+    .metar-dado .av-icon { grid-row: 1 / span 2; width: 27px; height: 27px; }
+    /* Tipografia adaptada quando o fundo noturno estiver ativo. */
+    :root[data-clima="noite"] #conteudo > section:not(.noticias) > .secao-cabeca h2 { color: #f1f9ff; }
+    :root[data-clima="noite"] #conteudo > section:not(.noticias) > .secao-cabeca p, :root[data-clima="noite"] .rodape { color: #c4d8e8; }
+    :root[data-clima="noite"] .rodape a { color: #d9efff; }
+    /* Painel aeronáutico — quadro de decisão para o campo. */
+    .aviacao { margin-top: 28px; padding: 0; overflow: hidden; border: 1px solid #b9d9e7; border-radius: 28px; background: #f8fcfe; box-shadow: 0 16px 34px #143e5c18; }
+    .aviacao-cabeca { padding: 24px; border: 0; background: linear-gradient(135deg, #083b5d, #146d94); color: #fff; }
+    .aviacao-cabeca h2 { color: inherit; font-size: clamp(1.45rem, 4vw, 1.9rem); }
+    .aviacao-cabeca h2::before { background: #f5ca58; box-shadow: 0 0 0 6px #f5ca5830; }
+    .aviacao-cabeca p { margin-top: 6px; color: #d8edf7; font-size: .9rem; }
+    .aviacao-grade { display: grid; grid-template-columns: minmax(230px, .9fr) minmax(0, 1.1fr); gap: 16px; margin: 0; padding: 20px 22px 8px; }
+    .vento-operacional { display: grid; grid-template-columns: 96px 1fr; grid-template-rows: auto auto; align-items: center; gap: 8px 16px; min-height: 190px; padding: 18px; border-radius: 21px; background: linear-gradient(145deg, #e0f3f9, #fafdff); border: 1px solid #c6e4ee; }
+    .vento-operacional .bussola { grid-row: 1 / span 2; width: 92px; height: 92px; flex-basis: 92px; border-color: #72b8d3; background: #fff; box-shadow: 0 5px 13px #13506c1c; }
+    .vento-operacional .bussola span { color: #155775; }
+    .vento-operacional .bussola .n { top: 6px; left: 41px; }.vento-operacional .bussola .s { bottom: 6px; left: 42px; }.vento-operacional .bussola .l { top: 41px; left: 8px; }.vento-operacional .bussola .o { top: 41px; right: 8px; }
+    .vento-operacional .ponteiro { top: 15px; left: 43px; height: 31px; transform-origin: 50% 29px; background: #f3ae28; box-shadow: 0 0 9px #f3ae28; }.vento-operacional .ponteiro:after { border-bottom-color: #f3ae28; }
+    .biruta-operacional { display: flex; align-items: center; gap: 10px; color: #28566e; font-size: .76rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }.biruta-operacional .meteocon { width: 52px; height: 52px; }
+    .resumo-vento b { display: block; color: #123e58; font-size: 1.28rem; letter-spacing: -.035em; }.resumo-vento span { display: block; margin-top: 4px; color: #567589; font-size: .86rem; }
+    .av-info { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .av-item { min-height: 86px; padding: 13px; border: 1px solid #d7e8ef; border-radius: 17px; background: #fff; box-shadow: none; }.av-item .av-icon { width: 37px; height: 37px; border-radius: 12px; background: #e6f5fa; }.av-item b { color: #143d57; font-size: .92rem; }.av-item small { color: #597a8d; }
+    .metar-leitura { margin: 12px 22px 0; padding: 17px; border: 1px solid #d5e6ed; border-radius: 20px; background: #fff; }.metar-leitura::before { display: block; margin-bottom: 12px; color: #285b75; font-size: .74rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; content: "Observação meteorológica"; }.metar-dados { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }.metar-dado { min-height: 65px; padding: 9px; border-radius: 12px; background: #eff8fb; }.metar-dado b { color: #1c4a64; font-size: .84rem; }.metar-bruto { margin-top: 12px; padding-top: 11px; border-top: 1px solid #dfedf2; color: #608095; font: .74rem/1.45 ui-monospace, SFMono-Regular, Menlo, monospace; word-break: break-word; }
+    .av-alerta { margin: 14px 22px 22px; padding: 13px 15px; border-radius: 15px; background: #fff6df; color: #6b5016; font-size: .82rem; line-height: 1.5; }
+    .aviacao-grade { display: block; }
+    .aviacao .av-info { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .aviacao .av-item:last-child { display: none; }
+    .aviacao .av-item { grid-template-columns: 48px 1fr; min-height: 108px; column-gap: 12px; }
+    .aviacao .av-item .av-icon { width: 48px; height: 48px; padding: 3px; border-radius: 15px; }
+    .aviacao .metar-dado .av-icon { width: 34px; height: 34px; }
+    .aviacao .metar-bruto { margin-top: 14px; padding: 12px 14px; border: 0; border-radius: 12px; background: #0a405f; color: #fff; }
+    @media (max-width: 700px) { .aviacao-grade { padding: 16px 16px 4px; }.aviacao .av-info { grid-template-columns: repeat(2, minmax(0, 1fr)); }.metar-leitura,.av-alerta { margin-right: 16px; margin-left: 16px; }.metar-dados { grid-template-columns: repeat(2, minmax(0, 1fr)); }.metar-dado:first-child { grid-column: 1 / -1; } }
+    @media (max-width: 430px) { .aviacao-cabeca { padding: 20px 17px; }.vento-operacional { grid-template-columns: 84px 1fr; padding: 14px; }.vento-operacional .bussola { width: 80px; height: 80px; flex-basis: 80px; }.vento-operacional .bussola .n { left: 35px; }.vento-operacional .bussola .s { left: 36px; }.vento-operacional .bussola .l { top: 35px; }.vento-operacional .bussola .o { top: 35px; }.vento-operacional .ponteiro { top: 13px; left: 37px; height: 26px; transform-origin: 50% 24px; }.av-info { grid-template-columns: 1fr; }.metar-dados { grid-template-columns: 1fr; }.metar-dado:first-child { grid-column: auto; }.aviacao .av-item { min-height: 98px; }.aviacao .av-item .av-icon { width: 44px; height: 44px; } }
+    /* Quadro aeronáutico textual, sem cartões ou ícones. */
+    .aviacao { padding: 0; overflow: visible; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+    .aviacao-cabeca { padding: 0 0 13px 16px; border-bottom: 2px solid #276e91; border-left: 5px solid #f0b52e; background: transparent; color: #173e56; }.aviacao-cabeca h2 { color: #173e56; }.aviacao-cabeca h2::before { display: none; }
+    .aero-linhas { margin-top: 14px; border-top: 1px solid #bcd5e1; }.aero-linha { display: grid; grid-template-columns: minmax(150px, .9fr) 1.4fr; gap: 18px; padding: 14px 4px; border-bottom: 1px solid #cfe0e8; }.aero-linha dt { color: #537287; font-size: .78rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }.aero-linha dd { margin: 0; color: #153c55; font-weight: 750; text-align: right; }
+    .aviacao-grade { display: block; margin: 0; padding: 0; }.aviacao .av-info,.aviacao .vento-operacional { display: none; }
+    .metar-leitura { margin: 22px 0 0; padding: 0; border: 0; border-radius: 0; background: transparent; }.metar-leitura::before { margin: 0 0 8px; padding-left: 16px; border-left: 5px solid #276e91; color: #173e56; content: "METAR · Leitura METAR"; }.metar-dados { display: block; border-top: 1px solid #bcd5e1; }.metar-dado { display: grid; grid-template-columns: minmax(150px, .9fr) 1.4fr; gap: 18px; min-height: 0; padding: 14px 4px; border-radius: 0; border-bottom: 1px solid #cfe0e8; background: transparent; }.metar-dado small { color: #537287; font-size: .78rem; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; }.metar-dado b { color: #153c55; font-size: .9rem; text-align: right; }.aviacao .metar-bruto { margin-top: 14px; padding: 0; border: 0; border-radius: 0; background: transparent; color: #385c71; font-size: .76rem; }
+    @media (max-width: 520px) { .aero-linha,.metar-dado { grid-template-columns: 1fr; gap: 4px; padding: 13px 2px; }.aero-linha dd,.metar-dado b { text-align: left; } }
+    /* Fundo de alto contraste para leitura do quadro aeronáutico. */
+    .aviacao { padding: 20px; border: 1px solid #c4dbe6; border-radius: 22px; background: linear-gradient(145deg, #ffffff, #eaf5f9); box-shadow: 0 10px 25px #123d5a14; }
+    .aviacao-cabeca { padding: 16px 18px; border: 0; border-left: 5px solid #f0b52e; border-radius: 13px; background: linear-gradient(135deg, #2a88ad, #56a9c6); }.aviacao-cabeca h2 { color: #fff; }
+    .aero-linha:first-child dt { font-size: 0; }
+    .aero-linha:first-child dt::after { color: #537287; font-size: .78rem; content: "Pista"; }
+    .aviacao-cabeca { padding: 0 0 13px; border: 0; border-bottom: 2px solid #8ab9cd; border-radius: 0; background: transparent; }
+    .aviacao-cabeca h2 { color: #173e56; }
+    /* Ícones da previsão diária em apresentação plana, sem sombras. */
+    .dia .tempo { width: 60px; height: 60px; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+    .dia .tempo .meteocon { width: 54px; height: 54px; filter: none; }
+    @media (max-width: 600px) { .dia .tempo { width: 56px; height: 56px; }.dia .tempo .meteocon { width: 50px; height: 50px; } }
+    .aero-linhas,.metar-dados { border-top-color: #b6d2df; }.aero-linha,.metar-dado { padding-right: 10px; padding-left: 10px; border-bottom-color: #c6dce6; background: #ffffffa8; }.aero-linha:nth-child(even),.metar-dado:nth-child(even) { background: #e7f3f8; }
+    @media (max-width: 700px) { .aviacao { padding: 16px; } }
+    /* Foto 16:9 do campo selecionada por condição meteorológica e horário. */
+    .hero::before { background-image: var(--imagem-clima) !important; background-position: center; background-size: cover; opacity: 1; filter: none !important; }
+    .hero::after, .hero .camadas-clima, .hero .ilustracao { display: none !important; }
+    /* Referência visual da pista e do vento no campo. */
+    .mapa-operacional { margin-top: 28px; overflow: hidden; border: 1px solid #c4dbe6; border-radius: 22px; background: #fff; box-shadow: 0 10px 25px #123d5a14; }
+    .mapa-operacional-cabeca { padding: 18px 20px; border-bottom: 1px solid #d7e6ed; }.mapa-operacional-cabeca h2 { color: #173e56; font-size: clamp(1.2rem, 3vw, 1.45rem); }.mapa-operacional-cabeca p { margin-top: 4px; color: #5d7b8e; font-size: .84rem; }
+    .mapa-operacional-cabeca p { display: none; }
+    .mapa-pista { aspect-ratio: auto; overflow: visible; }
+    .mapa-pista > img { height: auto; object-fit: contain; }
+    .mapa-vento { position: static; max-width: none; padding: 14px 18px; border: 0; border-top: 1px solid #d6e6ed; border-radius: 0; background: #f2f8fb; color: #173e56; box-shadow: none; backdrop-filter: none; }
+    .mapa-bussola { border-color: #6eafc8; background: #fff; }.mapa-bussola span { color: #1c5b77; }.mapa-vento b { color: #173e56; }.mapa-vento small { color: #58778a; }
+    .mapa-pista { position: relative; margin: 0; aspect-ratio: 1380 / 1043; overflow: hidden; background: #d6e6ec; }.mapa-pista > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+    .mapa-vento { position: absolute; right: 16px; bottom: 16px; display: flex; align-items: center; gap: 12px; max-width: min(350px, calc(100% - 32px)); padding: 12px 14px; border: 1px solid #ffffff8c; border-radius: 16px; background: #082e48e8; color: #fff; box-shadow: 0 8px 20px #061b2b66; backdrop-filter: blur(7px); }
+    .mapa-bussola { position: relative; display: block; width: 64px; height: 64px; flex: 0 0 64px; border: 1px solid #bde8fa; border-radius: 50%; }.mapa-bussola span { position: absolute; color: #dff6ff; font-size: .58rem; font-weight: 850; }.mapa-bussola .n { top: 4px; left: 27px; }.mapa-bussola .s { bottom: 4px; left: 28px; }.mapa-bussola .l { top: 27px; left: 5px; }.mapa-bussola .o { top: 27px; right: 5px; }.mapa-bussola i { position: absolute; top: 11px; left: 30px; width: 3px; height: 25px; border-radius: 3px; background: #f4bf36; transform: rotate(var(--vento)); transform-origin: 50% 21px; }.mapa-bussola i::after { position: absolute; top: -6px; left: -4px; border-right: 5px solid transparent; border-bottom: 10px solid #f4bf36; border-left: 5px solid transparent; content: ""; }
+    .mapa-vento b { display: block; font-size: .95rem; }.mapa-vento small { display: block; margin-top: 3px; color: #c7e8f5; font-size: .75rem; line-height: 1.35; }
+    @media (max-width: 520px) { .mapa-operacional-cabeca { padding: 15px 16px; }.mapa-pista { aspect-ratio: 1380 / 1043; }.mapa-vento { right: 10px; bottom: 10px; padding: 10px; }.mapa-bussola { width: 54px; height: 54px; flex-basis: 54px; }.mapa-bussola .n { left: 22px; }.mapa-bussola .s { left: 23px; }.mapa-bussola .l { top: 22px; }.mapa-bussola .o { top: 22px; }.mapa-bussola i { top: 9px; left: 25px; height: 21px; transform-origin: 50% 18px; }.mapa-vento b { font-size: .83rem; }.mapa-vento small { font-size: .68rem; } }
+    /* Informações do vento abaixo da imagem, com acabamento claro. */
+    .mapa-pista { aspect-ratio: auto; overflow: visible; }
+    .mapa-pista > img { height: auto; object-fit: contain; }
+    .mapa-vento { position: static; max-width: none; padding: 14px 18px; border: 0; border-top: 1px solid #d6e6ed; border-radius: 0; background: #f2f8fb; color: #173e56; box-shadow: none; backdrop-filter: none; }
+    .mapa-bussola { border-color: #6eafc8; background: #fff; }.mapa-bussola span { color: #1c5b77; }.mapa-vento b { color: #173e56; }.mapa-vento small { color: #58778a; }
+    @media (max-width: 520px) { .mapa-pista { aspect-ratio: auto; }.mapa-vento { position: static; padding: 12px 14px; } }
+    /* Novo desenho da previsão semanal: cartões amplos e leitura por blocos. */
+    .colunas .painel:has(.dias) { padding: 22px; border: 0; border-radius: 28px; background: linear-gradient(145deg, #f8fcff, #e6f4f9); box-shadow: 0 12px 30px #123d5a12; }
+    .colunas .painel:has(.dias) .secao-cabeca { margin-bottom: 18px; }.colunas .painel:has(.dias) .secao-cabeca h2 { color: #173e56; }.colunas .painel:has(.dias) .secao-cabeca p { color: #607e91; }
+    .colunas .dias { gap: 14px; padding-bottom: 15px; }.colunas .dia { flex-basis: min(278px, 80vw); min-height: 326px; padding: 18px; border: 1px solid #d7e8ef; border-radius: 22px; background: #fff; box-shadow: none; }
+    .colunas .dia:first-child { border-color: #75bcd6; background: linear-gradient(165deg, #fff, #eff9fc); }
+    .dia-cabeca { align-items: flex-start; }.dia-cabeca strong { color: #1d4d68; font-size: 1.02rem; font-weight: 850; }.dia .tempo { width: 62px; height: 62px; margin: -5px -4px 0 0; }
+    .temperaturas-dia { justify-content: space-between; gap: 0; margin: 15px 0; padding: 12px 0; border-top: 1px solid #deedf2; border-bottom: 1px solid #deedf2; }.temperaturas-dia span { display: grid; gap: 2px; color: #668194; font-size: .7rem; font-weight: 750; text-transform: uppercase; }.temperaturas-dia b { color: #173e56; font-size: 1.85rem; }.temperaturas-dia span:last-child { text-align: right; }.temperaturas-dia span:last-child b { color: #d06d2d; }
+    .detalhes-dia { gap: 0; }.detalhe-dia { min-height: 48px; padding: 9px 4px; border-radius: 0; border-bottom: 1px solid #e5f0f4; background: transparent; color: #658094; font-size: .69rem; }.detalhe-dia:nth-last-child(-n+2) { border-bottom: 0; }.detalhe-dia b { margin-top: 3px; color: #1d4d68; font-size: .82rem; }.detalhe-dia .meteocon { width: 18px; height: 18px; margin-right: 3px; }
+    @media (max-width: 600px) { .colunas .painel:has(.dias) { padding: 18px; border-radius: 24px; }.colunas .dia { flex-basis: min(264px, 79vw); min-height: 316px; padding: 16px; }.dia .tempo { width: 56px; height: 56px; }.temperaturas-dia b { font-size: 1.65rem; } }
+    .dia .tempo { width: 78px; height: 78px; }.dia .tempo .meteocon { width: 72px; height: 72px; }
+    @media (max-width: 600px) { .dia .tempo { width: 68px; height: 68px; }.dia .tempo .meteocon { width: 64px; height: 64px; } }
+    .fontes-meteorologicas { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; margin: 0 0 14px; padding: 12px 14px; border: 1px solid #d5e7ee; border-radius: 15px; background: #f2f9fc; color: #547489; font-size: .78rem; }.fontes-meteorologicas strong { color: #254e66; }.fontes-meteorologicas a { color: #176a92; font-weight: 750; text-decoration: none; }.fontes-meteorologicas a:hover { text-decoration: underline; }
+    .metar-sao-jose { margin-top: 28px; padding: 20px; border: 1px solid #c7dfe9; border-radius: 22px; background: linear-gradient(145deg, #f8fcfe, #e8f5fa); box-shadow: 0 10px 24px #123d5a12; }.metar-sao-jose-cabeca { display: flex; align-items: start; justify-content: space-between; gap: 14px; }.metar-sao-jose h2 { color: #173e56; font-size: clamp(1.2rem, 3vw, 1.45rem); }.metar-sao-jose-cabeca p { margin-top: 4px; color: #5b7a8d; font-size: .84rem; }.metar-sao-jose time { color: #5b7a8d; font-size: .76rem; text-align: right; }.metar-sao-jose-codigo { margin: 16px 0 12px; padding: 14px; border-radius: 13px; background: #0d3e5a; color: #fff; font: .82rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }.metar-sao-jose-rodape { color: #58788b; font-size: .76rem; }.metar-sao-jose-rodape a { color: #176a92; font-weight: 750; text-decoration: none; }
+    .metar-traducao { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 0 0 13px; }.metar-traducao div { padding: 10px; border-radius: 12px; background: #fff; }.metar-traducao dt { color: #688396; font-size: .68rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }.metar-traducao dd { margin: 4px 0 0; color: #1d4d68; font-size: .84rem; font-weight: 750; }.metar-traducao div:last-child { grid-column: span 2; }
+    @media (max-width: 600px) { .metar-traducao { grid-template-columns: repeat(2, minmax(0, 1fr)); }.metar-traducao div:last-child { grid-column: span 2; } }
+    .metar-traducao div:nth-child(3) { order: 4; }
+    .metar-traducao div:nth-child(4) { order: 3; }
+    .metar-traducao div:last-child { grid-column: auto; }
+    .metar-traducao div:nth-child(5):last-child { grid-column: span 2; }
+    @media (max-width: 520px) { .metar-sao-jose { padding: 17px; }.metar-sao-jose-cabeca { display: block; }.metar-sao-jose time { display: block; margin-top: 7px; text-align: left; } }
+    .radar-clube { margin-top: 28px; overflow: hidden; border: 1px solid #c7dfe9; border-radius: 22px; background: #fff; box-shadow: 0 10px 24px #123d5a12; }.radar-clube-cabeca { display: flex; align-items: end; justify-content: space-between; gap: 14px; padding: 18px 20px; }.radar-clube h2 { color: #173e56; font-size: clamp(1.2rem, 3vw, 1.45rem); }.radar-clube-cabeca p { margin-top: 4px; color: #5b7a8d; font-size: .84rem; }.radar-clube-cabeca a { color: #176a92; font-size: .78rem; font-weight: 750; text-decoration: none; white-space: nowrap; }.radar-mapa { position: relative; width: 100%; height: clamp(300px, 58vw, 480px); overflow: hidden; background: #dcebf1; }.radar-mapa iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; }.radar-legenda { padding: 11px 18px; border-top: 1px solid #d7e7ed; color: #5a788a; font-size: .76rem; }
+    @media (max-width: 520px) { .radar-clube-cabeca { display: block; padding: 16px; }.radar-clube-cabeca a { display: inline-block; margin-top: 9px; }.radar-mapa { height: 330px; }.radar-legenda { padding: 10px 16px; } }
+  </style>
+</head>
+<body>
+  <main class="pagina">
+    <header class="topo"><a class="marca" href="https://clube14bis.com.br/" aria-label="Ir ao site do Clube 14 BIS"><img src="logo14bis.png" alt="Clube 14 BIS"><p id="saudacao" class="saudacao">Olá! <time></time></p></a><p class="atualizacao"><span class="ponto"></span>Dados meteorológicos ao vivo</p></header>
+    <div id="conteudo" class="erro" aria-live="polite"><div>⛅</div><h2>Consultando o céu</h2><p>Buscando as condições atuais para o campo.</p></div>
+    <footer class="rodape"><span>Previsão meteorológica para o Clube 14 BIS</span></footer>
+  </main>
+  <script src="dados/frases-clima.js"></script>
+  <script>
+    const mapa={0:["☀️","Céu limpo"],1:["🌤️","Predominantemente limpo"],2:["⛅","Parcialmente nublado"],3:["☁️","Nublado"],45:["🌫️","Neblina"],48:["🌫️","Neblina"],51:["🌦️","Garoa"],53:["🌦️","Garoa"],55:["🌧️","Garoa"],61:["🌧️","Chuva fraca"],63:["🌧️","Chuva"],65:["🌧️","Chuva forte"],80:["🌦️","Pancadas de chuva"],81:["🌧️","Pancadas de chuva"],82:["⛈️","Pancadas fortes"],95:["⛈️","Trovoadas"]};
+    const clima=c=>mapa[c]||["🌤️","Condições variáveis"];
+    const dia=d=>new Intl.DateTimeFormat("pt-BR",{weekday:"short",day:"2-digit"}).format(new Date(d+"T12:00:00"));
+    const hora=d=>new Intl.DateTimeFormat("pt-BR",{hour:"2-digit",minute:"2-digit"}).format(new Date(d));
+    const rumo=g=>["Norte","Nordeste","Leste","Sudeste","Sul","Sudoeste","Oeste","Noroeste"][Math.round(g/45)%8];
+    function atualizarSaudacao(){const agora=new Date(),h=agora.getHours(),texto=h<12?"Bom dia":h<18?"Boa tarde":"Boa noite",horario=new Intl.DateTimeFormat("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(agora),data=new Intl.DateTimeFormat("pt-BR",{weekday:"long",day:"2-digit",month:"long"}).format(agora),el=document.querySelector("#saudacao");if(el)el.innerHTML=`${texto}! <time datetime="${agora.toISOString()}">· ${horario} · ${data}</time>`}
+    let codigoAtual=0,codigoAnterior=null,condicoesAtuais={};
+    function horarioCena(data=new Date()){const horarios=["0600","0900","1200","1500","1730","1800","1900","2100"],minutos=data.getHours()*60+data.getMinutes();return horarios.reduce((melhor,hora)=>{const valor=Number(hora.slice(0,2))*60+Number(hora.slice(2)),atual=Number(melhor.slice(0,2))*60+Number(melhor.slice(2));return Math.abs(valor-minutos)<Math.abs(atual-minutos)?hora:melhor})}
+    function condicaoCena(codigo,atual={}){if(codigo>=96)return"tempestade-raios";if(codigo>=95)return"tempestade";if(codigo===45||codigo===48)return atual.visibility!=null&&atual.visibility<1000?"neblina-intensa":"neblina";if((atual.temperature_2m||0)>=35)return"calor-extremo";if(codigo>=65||codigo>=80)return"chuva-moderada";if(codigo>=51)return"chuva-fraca";if(codigoAnterior>=95)return"pos-tempestade";if(codigoAnterior>=51)return"pos-chuva";if(codigo===3)return"muito-nublado";if(codigo===1||codigo===2)return"parcialmente-nublado";return"ensolarado"}
+    function aplicarPaleta(codigo,atual){codigoAtual=codigo;if(atual)condicoesAtuais=atual;const h=new Date().getHours(),neblina=codigo===45||codigo===48,chovendo=codigo>=51,tipo=chovendo?"chuva":neblina?"neblina":h<5||h>=18?"noite":codigo===2||codigo===3?"nublado":"sol";let cores;if(chovendo||neblina)cores={fundo:"#d8e0e7",brilho:"#f2f5f7",inicio:"#435b70",meio:"#728899",fim:"#a4b0b9"};else if(tipo==="noite")cores={fundo:"#071a31",brilho:"#193e67",inicio:"#061a36",meio:"#0b345f",fim:"#17698c"};else if(h>=15)cores={fundo:"#f3d7c0",brilho:"#ffe9c5",inicio:"#7c3d1a",meio:"#c96c31",fim:"#e8a14b"};else cores={fundo:"#eaf1f7",brilho:"#cbe9ff",inicio:"#072646",meio:"#096395",fim:"#2da8c5"};const raiz=document.documentElement,cena=condicaoCena(codigo,condicoesAtuais);raiz.dataset.clima=tipo;raiz.style.setProperty("--imagem-clima",`url("imagens/${cena}-${horarioCena()}.png")`);raiz.style.setProperty("--fundo",cores.fundo);raiz.style.setProperty("--brilho",cores.brilho);raiz.style.setProperty("--hero-inicio",cores.inicio);raiz.style.setProperty("--hero-meio",cores.meio);raiz.style.setProperty("--hero-fim",cores.fim);codigoAnterior=codigo}
+    const orientacoes={chuva:["Não esqueça o <b>guarda-chuva</b> — há possibilidade de chuva nas condições atuais.","Cuidado ao voar seu <b>aeromodelo</b>: chuva deixa a pista e os equipamentos vulneráveis.","Proteja rádio, baterias e ferramentas antes de qualquer voo com chance de chuva.","Observe o céu e interrompa o voo ao primeiro sinal de pancadas mais fortes.","Com umidade elevada, confira conectores e mantenha o aeromodelo sempre seco.","Se a chuva aumentar, adie a decolagem e use o tempo para revisar seu equipamento."],vento:["Faça todos os <b>checklists</b> antes do voo — as rajadas exigem atenção extra.","Cuidado ao voar seu avião: o vento pode mudar rapidamente na aproximação.","Prefira modelos mais estáveis e mantenha uma margem maior para pousar.","Observe a biruta antes de decolar e a cada novo voo.","Vento e rajadas pedem comandos suaves e uma área livre para recuperar o modelo.","Se o vento aumentar, a decisão mais segura pode ser guardar o aeromodelo para depois."],sol:["Use <b>protetor solar</b> e não esqueça o boné antes de preparar seu avião.","Tempo aberto pede água por perto: mantenha-se hidratado entre os voos.","O sol está forte; proteja os olhos e confira se a tela do rádio continua visível.","Antes de voar, deixe baterias e eletrônicos fora do sol direto.","Aproveite o céu aberto, mas faça uma pausa à sombra entre as decolagens.","Calor e sol forte exigem atenção redobrada com crianças, pilotos e equipamentos."],noite:["A luz está baixa: só voe se você conhecer bem o campo e seu aeromodelo estiver adequado.","Antes de voar no fim do dia, confira iluminação, bateria e visibilidade do modelo.","Com pouca luz, reduza a distância e mantenha o avião sempre no campo de visão.","Evite voar sozinho à noite e informe alguém sobre sua atividade no campo.","No voo ao entardecer, faça um último checklist e planeje o pouso com antecedência.","Se a visibilidade cair, encerre o voo com calma e guarde o equipamento com segurança."],bom:["<b>Tempo bom para voar.</b> Faça o checklist completo e aproveite o campo.","Condições agradáveis: confira centro de gravidade, bateria e comandos antes da decolagem.","O clima está favorável para o aeromodelismo; mantenha sempre a segurança em primeiro lugar.","Boa janela de voo: defina a área de pouso antes de colocar o avião no ar.","Aproveite o tempo estável para treinar manobras com responsabilidade.","Céu colaborando: respeite os limites do seu modelo e divirta-se no campo."]};
+    function mensagemCampo(vento,rajada,chuva,uv,codigo){const h=new Date().getHours(),grupo=codigo===45||codigo===48?"neblina":chuva>=40||codigo>=51?"chuva":vento>15||rajada>28?"vento":h<6||h>=18?"noite":uv>=6?"sol":"bom",lista=window.bancoFrasesClima?.[grupo]||orientacoes[grupo]||orientacoes.chuva;return lista[Math.floor(Date.now()/600000)%lista.length]}
+    function avaliacao(vento,rajada,chuva,uv,codigo){const texto=mensagemCampo(vento,rajada,chuva,uv,codigo);if(vento<=15&&rajada<=28&&chuva<30)return["Boa janela para voar",texto,"✓","#159569"];if(vento<=25&&rajada<=42&&chuva<60)return["Atenção às condições",texto,"!","#d58a13"];return["Condições desfavoráveis",texto,"!","#d5574a"]}
+    async function carregarNoticias(){const lista=document.querySelector("#lista-noticias");if(!lista)return;const rss="https://news.google.com/rss/search?q=clima+Brasil&hl=pt-BR&gl=BR&ceid=BR:pt-419";try{const r=await fetch("https://api.rss2json.com/v1/api.json?rss_url="+encodeURIComponent(rss));const x=await r.json();if(x.status!=="ok"||!x.items?.length)throw Error();lista.replaceChildren(...x.items.slice(0,3).map(n=>{const a=document.createElement("a"),t=document.createElement("strong"),d=document.createElement("small");a.className="noticia";a.href=n.link;a.target="_blank";a.rel="noopener noreferrer";t.textContent=n.title;d.textContent=n.pubDate||"Notícia recente";a.append(t,d);return a}))}catch{lista.innerHTML='<p class="vazio">Não foi possível carregar as manchetes agora. <a href="https://news.google.com/search?q=clima%20Brasil&hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener noreferrer">Ver notícias recentes</a></p>'}}
+    function renderizar(x){const c=x.current,d=x.daily,h=x.hourly,[ico,desc]=clima(c.weather_code),ch=d.precipitation_probability_max[0],s=avaliacao(c.wind_speed_10m,c.wind_gusts_10m,ch,d.uv_index_max[0],c.weather_code),agora=new Date();aplicarPaleta(c.weather_code,c);setTimeout(()=>{const tags=document.querySelector(".tags"),horaAtual=new Date().getHours(),tipo=c.weather_code>=51?"chuva":c.weather_code===45||c.weather_code===48?"neblina":horaAtual<5||horaAtual>=18?"noite":c.weather_code===2||c.weather_code===3?"nublado":"sol";if(tags)tags.insertAdjacentHTML("beforeend",`<span class="tag">🌅 Nascer do sol: ${hora(d.sunrise[0])}</span><span class="tag">🌇 Pôr do sol: ${hora(d.sunset[0])}</span>`);const arte=document.querySelector(".ilustracao");if(arte){arte.className=`ilustracao clima-logo ${tipo}`;arte.innerHTML='<img class="logo-card" src="logo14bis.png" alt="Clube de Aeromodelismo 14 BIS"><span class="gotas" aria-hidden="true"></span>'}},0);
+      const hs=h.time.map((t,i)=>({t,i})).filter(o=>new Date(o.t)>=agora).slice(0,12).map(({t,i},n)=>`<article class="hora ${n===0?"agora":""}"><strong>${n===0?"Agora":hora(t)}</strong><span>${iconeHora(h.weather_code[i],t,d)}</span><b>${Math.round(h.temperature_2m[i])}°</b><small>Vento de ${Math.round(h.wind_speed_10m[i])} km/h</small></article>`).join("");
+      const lo=Math.min(...d.temperature_2m_min),hi=Math.max(...d.temperature_2m_max);
+      const ds=d.time.map((t,i)=>{const[e]=clima(d.weather_code[i]),min=Math.round(d.temperature_2m_min[i]),max=Math.round(d.temperature_2m_max[i]),chuva=d.precipitation_probability_max[i],mm=d.precipitation_sum[i].toFixed(1),vento=Math.round(d.wind_speed_10m_max[i]),rajada=Math.round(d.wind_gusts_10m_max[i]),uv=d.uv_index_max[i].toFixed(0),lua=faseLua(t);return `<article class="dia"><div class="dia-cabeca"><strong>${i===0?"Hoje":dia(t)}</strong><span class="tempo" aria-label="${clima(d.weather_code[i])[1]}">${e}</span></div><div class="temperaturas-dia"><span>Mín. <b>${min}°</b></span><span>Máx. <b>${max}°</b></span></div><div class="detalhes-dia"><span class="detalhe-dia">Vento máximo<b>${vento} km/h</b></span><span class="detalhe-dia">≋ Rajadas<b>${rajada} km/h</b></span><span class="detalhe-dia">☂ Chuva<b>${chuva}% · ${mm} mm</b></span><span class="detalhe-dia">☀️ Índice UV<b>${uv}/11</b></span><span class="detalhe-dia">Fase da Lua<b>${lua}</b></span><span class="detalhe-dia">🌅 Nascer do sol<b>${hora(d.sunrise[i])}</b></span><span class="detalhe-dia">🌇 Pôr do sol<b>${hora(d.sunset[i])}</b></span></div></article>`}).join("");
+      document.querySelector("#conteudo").outerHTML=`<div id="conteudo"><section class="hero" aria-label="Condições atuais"><div class="hero-cabeca"><p class="condicao">${desc}</p><p class="hero-data">Atualizado às ${hora(agora)}</p></div><div class="hero-corpo"><div><p class="temperatura">${Math.round(c.temperature_2m)}°</p><p class="sensacao">Sensação térmica de ${Math.round(c.apparent_temperature)}°C</p></div><div class="ilustracao" aria-hidden="true">${ico}</div></div><div class="tags"><span class="tag forte">${s[0]}</span><span class="tag">Chuva hoje: ${ch}%</span><span class="tag">Visibilidade: ${(c.visibility/1000).toFixed(1)} km</span></div></section><div class="grade" aria-label="Medições atuais"><article class="cartao"><span class="cartao-icone">↗</span><p class="numero">${Math.round(c.wind_speed_10m)} km/h</p><p class="rotulo">Vento constante</p></article><article class="cartao"><span class="cartao-icone">≋</span><p class="numero">${Math.round(c.wind_gusts_10m)} km/h</p><p class="rotulo">Rajada máxima</p></article><article class="cartao"><span class="cartao-icone">☂</span><p class="numero">${ch}%</p><p class="rotulo">Probabilidade de chuva</p></article><article class="cartao"><span class="cartao-icone">◉</span><p class="numero">${(c.visibility/1000).toFixed(1)} km</p><p class="rotulo">Visibilidade</p></article></div><section><header class="secao-cabeca"><div><h2>Próximas horas</h2><p>Temperatura e vento previstos para hoje.</p></div><span class="legenda">Deslize para ver mais</span></header><div class="horas">${hs}</div></section><section class="colunas"><div class="painel"><header class="secao-cabeca"><div><h2>Previsão de 7 dias</h2><p>Temperaturas mínima e máxima.</p></div></header><div class="dias">${ds}</div></div><aside class="painel situacao" style="--cor:${s[3]}"><div><div class="situacao-topo"><span class="sinal">${s[2]}</span><div><h3>${s[0]}</h3><small>Orientação para o campo</small></div></div><p>${s[1]}</p></div><div class="vento"><span class="rosa" style="--vento:${c.wind_direction_10m}deg" aria-hidden="true">➤</span><span><b>Vento do ${rumo(c.wind_direction_10m)}</b><small>${Math.round(c.wind_direction_10m)}° · ${Math.round(c.wind_speed_10m)} km/h agora</small></span></div></aside></section><section class="noticias"><header class="secao-cabeca"><div><h2>Últimas notícias do tempo</h2><p>Principais manchetes sobre clima no Brasil.</p></div><a href="https://news.google.com/search?q=clima%20Brasil&hl=pt-BR&gl=BR&ceid=BR%3Apt-419" target="_blank" rel="noopener noreferrer">Ver todas</a></header><div id="lista-noticias" class="lista-noticias"><p class="vazio">Carregando manchetes recentes...</p></div></section></div>`;carregarNoticias();}
+    function iconeHora(codigo,momento,diario){const indice=diario.time.indexOf(momento.slice(0,10)),nascer=indice>=0?new Date(diario.sunrise[indice]):null,por=indice>=0?new Date(diario.sunset[indice]):null,agora=new Date(momento),noite=nascer&&por&&(agora<nascer||agora>=por);if(noite&&codigo<45)return svgClima("noite");return clima(codigo)[0]}
+    function faseLua(data){const ciclo=29.53058867,referencia=Date.UTC(2000,0,6,18,14),idade=((((new Date(`${data}T12:00:00`).getTime()-referencia)/86400000)%ciclo)+ciclo)%ciclo;return idade<1.85?"Lua nova":idade<5.54?"Crescente":idade<9.23?"Quarto crescente":idade<12.92?"Gibosa crescente":idade<16.61?"Lua cheia":idade<20.3?"Gibosa minguante":idade<23.99?"Quarto minguante":"Minguante"}
+    function svgClima(tipo){const arquivo={sol:"clear-day",noite:"clear-night",nublado:"partly-cloudy-day",neblina:"fog",trovoada:"thunderstorms-rain",chuva:"rain"}[tipo]||"mostly-clear-day";return `<img class="weather-svg meteocon" src="assets/meteocons/${arquivo}.svg" alt="">`}
+    function imagemMeteocon(nome){return `<img class="meteocon" src="assets/meteocons/${nome}.svg" alt="" aria-hidden="true">`}
+    function substituirIconesMeteocons(){const porRotulo={"Probabilidade de chuva":"raindrop",Visibilidade:"mist","Nascer do sol":"sunrise","Pôr do sol":"sunset"};document.querySelectorAll(".cartao").forEach(card=>{const rotulo=card.querySelector(".rotulo")?.textContent,icone=card.querySelector(".cartao-icone");if(icone&&porRotulo[rotulo])icone.innerHTML=imagemMeteocon(porRotulo[rotulo])});document.querySelectorAll(".detalhe-dia").forEach(item=>{const texto=item.firstChild;if(!texto||texto.nodeType!==3||item.querySelector(".meteocon"))return;const nome=/Rajadas/.test(item.textContent)?"windsock":/Chuva/.test(item.textContent)?"raindrop":/Índice UV/.test(item.textContent)?"clear-day":/Nascer/.test(item.textContent)?"sunrise":/Pôr/.test(item.textContent)?"sunset":/Vento/.test(item.textContent)?"wind":null;if(nome){texto.nodeValue=texto.nodeValue.replace(/^[^A-Za-zÀ-ÿ]*/,"");item.insertAdjacentHTML("afterbegin",imagemMeteocon(nome))}});document.querySelectorAll(".mini-bussola").forEach(el=>el.innerHTML=imagemMeteocon("compass"));document.querySelectorAll(".biruta").forEach(el=>el.innerHTML=imagemMeteocon("windsock"))}
+    function substituirIconesSvg(){document.querySelectorAll(".tempo,.hora span").forEach(el=>{const texto=el.textContent,tipo=/⛈/.test(texto)?"trovoada":/🌫/.test(texto)?"neblina":/🌧|🌦/.test(texto)?"chuva":/☁/.test(texto)?"nublado":/☀/.test(texto)?"sol":/🌤|⛅/.test(texto)?"nublado":null;if(tipo)el.innerHTML=svgClima(tipo)})}
+    function organizarCartoesSolares(){const hero=document.querySelector(".hero"),tags=hero?.querySelector(".tags"),grade=document.querySelector(".grade");if(!hero||!tags||!grade||grade.dataset.solar)return;const solares=[...tags.querySelectorAll(".tag")].filter(item=>/Nascer do sol|Pôr do sol/.test(item.textContent));if(solares.length!==2)return;solares.forEach((item,i)=>{const[rotulo,valor]=item.textContent.replace(/^[^A-Za-zÀ-ÿ]*\s*/,"").split(": ");const card=document.createElement("article"),icone=document.createElement("span"),numero=document.createElement("p"),label=document.createElement("p");card.className="cartao";icone.className=`cartao-icone solar ${i===0?"nascer":"por"}`;numero.className="numero";numero.textContent=valor;label.className="rotulo";label.textContent=rotulo;card.append(icone,numero,label);grade.append(card)});grade.dataset.solar="ok";tags.remove();hero.querySelector(".hero-data")?.remove()}
+    function adicionarPainelAviacao(){const grade=document.querySelector(".grade");if(!grade||document.querySelector("#painel-aviacao"))return;const valores=[...grade.querySelectorAll(".cartao .numero")].map(el=>parseFloat(el.textContent.replace(",","."))),vento=valores[0]||0,rajada=valores[1]||0,detalhe=document.querySelector(".situacao .vento small")?.textContent||"0°",direcao=parseFloat(detalhe)||0,pista=69,angulo=(direcao-pista)*Math.PI/180,proa=Math.round(vento*Math.cos(angulo)),atraves=Math.round(Math.abs(vento*Math.sin(angulo))),card=document.createElement("section");card.id="painel-aviacao";card.className="aviacao";card.innerHTML=`<header class="aviacao-cabeca"><div><h2>Painel aeronáutico</h2><p>SDMH · Mirassol, SP · referência para operações no Clube 14 BIS</p></div></header><div class="aviacao-grade"><div class="av-info"><div class="av-item"><small>Pista</small><b>07/25 · 069° magnético</b></div><div class="av-item"><small>Elevação</small><b>1.916 ft</b></div><div class="av-item"><small>Coordenadas do Clube</small><b>−20,784658 · −49,508591</b></div><div class="av-item"><small>Vento através · pista 07</small><b>${atraves} km/h</b></div><div class="av-item"><small>Componente na pista 07</small><b>${Math.abs(proa)} km/h de ${proa>=0?"proa":"cauda"}</b></div></div><div class="vento-av"><div class="bussola" aria-label="Bússola com vento de ${Math.round(direcao)} graus"><span class="n">N</span><span class="l">L</span><span class="s">S</span><span class="o">O</span><i class="ponteiro" style="transform:rotate(${direcao}deg)"></i></div><div class="biruta" style="--vento:${direcao}deg" aria-hidden="true"><svg viewBox="0 0 100 70" fill="none"><path d="M12 60h74M28 60V12" stroke="#d8f5ff" stroke-width="5" stroke-linecap="round"/><path d="M30 15h48l-13 13 13 13H30z" fill="#ffdc69"/><circle cx="28" cy="12" r="6" fill="#d8f5ff"/></svg></div><div><b>Vento de ${Math.round(direcao)}° · ${vento} km/h</b><small>Rajadas: ${rajada} km/h · direção indicada pela bússola e biruta</small></div></div></div><section class="metar-leitura" aria-live="polite"><div class="metar-dados"></div><p class="metar-bruto"></p></section><p class="av-alerta">Antes de voar, confirme condições locais, NOTAM, procedimentos do aeródromo, área operacional e limites do seu aeromodelo.</p>`;grade.insertAdjacentElement("afterend",card);carregarMetar()}
+    function textoMetar(x){const card=document.querySelector("#painel-aviacao");if(!card)return;const dados=card.querySelector(".metar-dados"),bruto=card.querySelector(".metar-bruto");if(!x){dados.innerHTML='<div class="metar-dado"><small>Status</small><b>Aguardando atualização</b></div>';bruto.textContent="";return}const quando=x.reportTime?new Intl.DateTimeFormat("pt-BR",{dateStyle:"short",timeStyle:"short",timeZone:"America/Sao_Paulo"}).format(new Date(x.reportTime)):"horário não informado",vento=x.wdir==null?"Variável":`${String(x.wdir).padStart(3,"0")}° · ${x.wspd??"—"} kt`,itens=[["Observação",quando],["Vento",vento],["Visibilidade",x.visib?`${x.visib} SM`:"—"],["Temperatura",x.temp!=null?`${x.temp}°C · orvalho ${x.dewp}°C`:"—"],["QNH",x.altim?`${x.altim} hPa`:"—"]];dados.innerHTML=itens.map(([r,v])=>`<div class="metar-dado"><small>${r}</small><b>${v}</b></div>`).join("");bruto.textContent=(x.rawOb||"").replace(/^METAR\s+[A-Z]{4}\s+/,"METAR ")}
+    function exibirCoordenadasClube(){const card=[...document.querySelectorAll("#painel-aviacao .av-item")].find(item=>item.querySelector("small")?.textContent==="Coordenadas do Clube");if(card)card.querySelector("b").textContent='20°47\'05.40"S · 49°30\'31.57"W'}
+    async function carregarMetar(){exibirCoordenadasClube();try{const r=await fetch(`metar.json?at=${Date.now()}`);if(!r.ok)throw Error();textoMetar(await r.json())}catch{textoMetar(null)}}
+    function adicionarCamadasClima(){const hero=document.querySelector(".hero");if(!hero||hero.querySelector(".camadas-clima"))return;const camadas=document.createElement("div");camadas.className="camadas-clima";camadas.setAttribute("aria-hidden","true");camadas.innerHTML='<span class="raios-sol"></span><span class="nuvens-distantes"></span><span class="chuva-frente"></span><span class="neblina-frente"></span><span class="ceu-noturno"></span>';hero.append(camadas)}
+    function posicionarCondicoes(){const hero=document.querySelector(".hero"),situacao=document.querySelector(".situacao");if(!hero||!situacao)return;situacao.classList.add("condicoes-principais");hero.insertAdjacentElement("afterend",situacao);const rosa=situacao.querySelector(".rosa");if(rosa)rosa.innerHTML='<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="15"></circle><path d="M20 31V9m0 0-6 7m6-7 6 7"></path><path d="M20 5v1"></path></svg>'}
+    function adicionarExtremosHoje(){const hero=document.querySelector(".hero"),sensacao=hero?.querySelector(".sensacao"),temperaturas=document.querySelector(".dia .temperaturas-dia");if(!sensacao||!temperaturas||hero.querySelector(".extremos-hoje"))return;const valores=[...temperaturas.querySelectorAll("span")].map(item=>({rotulo:item.childNodes[0]?.textContent.trim(),valor:item.querySelector("b")?.textContent}));if(valores.length!==2)return;const extremos=document.createElement("p");extremos.className="extremos-hoje";extremos.innerHTML=valores.map(item=>`<span>${item.rotulo}<b>${item.valor}</b></span>`).join("");sensacao.insertAdjacentElement("afterend",extremos)}
+    function adicionarDirecaoVento(){const grade=document.querySelector(".grade"),vento=document.querySelector(".situacao .vento");if(!grade||!vento||grade.querySelector(".cartao-direcao"))return;const titulo=vento.querySelector("b")?.textContent||"Direção do vento",detalhe=vento.querySelector("small")?.textContent||"",angulo=vento.querySelector(".rosa")?.style.getPropertyValue("--vento")||"0deg",card=document.createElement("article");card.className="cartao cartao-direcao";card.innerHTML=`<span class="mini-bussola" style="--vento:${angulo}" aria-hidden="true"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="15"></circle><path d="M20 31V9m0 0-6 7m6-7 6 7"></path></svg></span><p class="numero">${titulo}</p><p class="rotulo">${detalhe}</p>`;grade.append(card);vento.remove()}
+    function removerResumoBussolaAviacao(){document.querySelector("#painel-aviacao .vento-av > div:last-child")?.remove()}
+    function adicionarIconesAviacao(){const mapa={"Pista":"compass","Elevação":"clear-day","Coordenadas do Clube":"compass","Vento através · pista 07":"wind","Componente na pista 07":"wind",Observação:"compass",Vento:"windsock",Visibilidade:"mist",Temperatura:"thermometer-celsius",QNH:"compass"};document.querySelectorAll("#painel-aviacao .av-item,#painel-aviacao .metar-dado").forEach(item=>{if(item.querySelector(".av-icon"))return;const rotulo=item.querySelector("small")?.textContent.trim(),icone=mapa[rotulo];if(!icone)return;item.insertAdjacentHTML("afterbegin",`<img class="meteocon av-icon" src="assets/meteocons/${icone}.svg" alt="">`)})}
+    function mesclarInformacoesVento(){const grade=document.querySelector(".grade"),cards=[...grade?.querySelectorAll(":scope > .cartao")||[]],constante=cards.find(card=>card.querySelector(".rotulo")?.textContent==="Vento constante"),rajada=cards.find(card=>card.querySelector(".rotulo")?.textContent==="Rajada máxima"),direcao=grade?.querySelector(".cartao-direcao");if(!constante||!rajada||!direcao||grade.querySelector(".cartao-vento-completo"))return;const velocidade=constante.querySelector(".numero")?.textContent||"—",maxima=rajada.querySelector(".numero")?.textContent||"—",titulo=direcao.querySelector(".numero")?.textContent||"Direção do vento",detalhe=direcao.querySelector(".rotulo")?.textContent||"",bussola=direcao.querySelector(".mini-bussola")?.outerHTML||"",novo=document.createElement("article");novo.className="cartao cartao-vento-completo";novo.innerHTML=`${bussola}<div class="direcao-vento"><b>${titulo}</b><small>${detalhe}</small></div><div class="dados-vento"><span>Vento constante<b>${velocidade}</b></span><span>Rajada máxima<b>${maxima}</b></span></div>`;constante.before(novo);constante.remove();rajada.remove();direcao.remove()}
+    function padronizarHoras(){const horas=[...document.querySelectorAll(".hora")];horas.forEach((card,i)=>{const titulo=card.querySelector("strong");if(!titulo)return;let texto=titulo.textContent;if(i===0&&texto==="Agora"){const proxima=horas[1]?.querySelector("strong")?.textContent.match(/^(\d{2}):(\d{2})$/);if(proxima)texto=`${(Number(proxima[1])+23)%24}h`}else{const horario=texto.match(/^(\d{2}):(\d{2})$/);if(horario)texto=`${Number(horario[1])}h`}titulo.textContent=texto;card.classList.remove("agora")})}
+    function adicionarPainelAviacao(){const grade=document.querySelector(".grade");if(!grade||document.querySelector("#painel-aviacao"))return;const valores=[...grade.querySelectorAll(".cartao .numero")].map(el=>parseFloat(el.textContent.replace(",","."))),vento=valores[0]||0,detalhe=document.querySelector(".situacao .vento small")?.textContent||"0°",direcao=parseFloat(detalhe)||0,pista=69,angulo=(direcao-pista)*Math.PI/180,proa=Math.round(vento*Math.cos(angulo)),atraves=Math.round(Math.abs(vento*Math.sin(angulo))),card=document.createElement("section");card.id="painel-aviacao";card.className="aviacao";card.innerHTML=`<header class="aviacao-cabeca"><h2>Painel aeronáutico</h2></header><div class="aviacao-grade"><div class="av-info"><div class="av-item"><small>Pista de referência</small><b>07/25 · 069°</b></div><div class="av-item"><small>Elevação</small><b>1.916 ft</b></div><div class="av-item"><small>Vento cruzado · pista 07</small><b>${atraves} km/h</b></div><div class="av-item"><small>Componente longitudinal</small><b>${Math.abs(proa)} km/h de ${proa>=0?"proa":"cauda"}</b></div><div class="av-item"><small>Coordenadas do Clube</small><b>−20,784658 · −49,508591</b></div><div class="av-item"><small>Condição operacional</small><b>Verifique campo e aeronave</b></div></div></div><section class="metar-leitura" aria-live="polite"><div class="metar-dados"></div><p class="metar-bruto"></p></section>`;grade.insertAdjacentElement("afterend",card);carregarMetar()}
+    function adicionarIconesAviacao(){const mapa={"Pista de referência":"compass",Elevação:"clear-day","Coordenadas do Clube":"compass","Vento cruzado · pista 07":"wind","Componente longitudinal":"wind","Condição operacional":"windsock",Observação:"compass",Vento:"windsock",Visibilidade:"mist",Temperatura:"thermometer-celsius",QNH:"compass",Status:"compass"};document.querySelectorAll("#painel-aviacao .av-item,#painel-aviacao .metar-dado").forEach(item=>{if(item.querySelector(".av-icon"))return;const rotulo=item.querySelector("small")?.textContent.trim(),icone=mapa[rotulo];if(icone)item.insertAdjacentHTML("afterbegin",`<img class="meteocon av-icon" src="assets/meteocons/${icone}.svg" alt="">`)})}
+    async function carregarMetar(){exibirCoordenadasClube();try{const r=await fetch(`metar.json?at=${Date.now()}`);if(!r.ok)throw Error();textoMetar(await r.json())}catch{textoMetar(null)}finally{adicionarIconesAviacao()}}
+    function adicionarPainelAviacao(){const grade=document.querySelector(".grade");if(!grade||document.querySelector("#painel-aviacao"))return;const valores=[...grade.querySelectorAll(".cartao .numero")].map(el=>parseFloat(el.textContent.replace(",","."))),vento=valores[0]||0,detalhe=document.querySelector(".situacao .vento small")?.textContent||"0°",direcao=parseFloat(detalhe)||0,pista=69,angulo=(direcao-pista)*Math.PI/180,proa=Math.round(vento*Math.cos(angulo)),atraves=Math.round(Math.abs(vento*Math.sin(angulo))),card=document.createElement("section");card.id="painel-aviacao";card.className="aviacao";card.innerHTML=`<header class="aviacao-cabeca"><h2>Painel aeronáutico</h2></header><div class="aviacao-grade"><dl class="aero-linhas"><div class="aero-linha"><dt>Pista de referência</dt><dd>07/25 · 069°</dd></div><div class="aero-linha"><dt>Elevação</dt><dd>1.916 ft</dd></div><div class="aero-linha"><dt>Vento atual</dt><dd>${Math.round(direcao)}° · ${vento} km/h</dd></div><div class="aero-linha"><dt>Vento cruzado · pista 07</dt><dd>${atraves} km/h</dd></div><div class="aero-linha"><dt>Componente longitudinal</dt><dd>${Math.abs(proa)} km/h de ${proa>=0?"proa":"cauda"}</dd></div><div class="aero-linha"><dt>Coordenadas do Clube</dt><dd>20°47'05.40&quot;S · 49°30'31.57&quot;W</dd></div></dl></div><section class="metar-leitura" aria-live="polite"><div class="metar-dados"></div><p class="metar-bruto"></p></section>`;grade.insertAdjacentElement("afterend",card);carregarMetar()}
+    function adicionarIconesAviacao(){}
+    function adicionarMapaOperacional(){const painel=document.querySelector("#painel-aviacao");if(!painel||document.querySelector("#mapa-operacional"))return;const leitura=document.querySelector(".situacao .vento small")?.textContent||"0° · 0 km/h",direcao=parseFloat(leitura)||0,velocidade=leitura.match(/·\s*(\d+)\s*km\/h/)?.[1]||"—",mapa=document.createElement("section");mapa.id="mapa-operacional";mapa.className="mapa-operacional";mapa.innerHTML=`<header class="mapa-operacional-cabeca"><h2>Referência da pista</h2><p>Clube de Aeromodelismo 14 BIS · Mirassol, SP</p></header><figure class="mapa-pista"><img src="Mapa-14bis.jpg" alt="Vista aérea da pista do Clube 14 BIS"><figcaption class="mapa-vento"><span class="mapa-bussola" style="--vento:${direcao}deg" aria-label="Bússola indicando vento de ${Math.round(direcao)} graus"><span class="n">N</span><span class="l">L</span><span class="s">S</span><span class="o">O</span><i></i></span><span><b>Vento de ${Math.round(direcao)}° · ${velocidade} km/h</b><small>20°47'05.40&quot;S · 49°30'31.57&quot;W</small></span></figcaption></figure>`;painel.insertAdjacentElement("afterend",mapa)}
+    function adicionarPainelAviacao(){}
+    function adicionarMapaOperacional(){const grade=document.querySelector(".grade");if(!grade||document.querySelector("#mapa-operacional"))return;const leitura=document.querySelector(".situacao .vento small")?.textContent||"0° · 0 km/h",direcao=parseFloat(leitura)||0,velocidade=leitura.match(/·\s*(\d+)\s*km\/h/)?.[1]||"—",mapa=document.createElement("section");mapa.id="mapa-operacional";mapa.className="mapa-operacional";mapa.innerHTML=`<header class="mapa-operacional-cabeca"><h2>Referência da pista</h2></header><figure class="mapa-pista"><img src="Mapa-14bis.jpg" alt="Vista aérea da pista do Clube 14 BIS"><figcaption class="mapa-vento"><span class="mapa-bussola" style="--vento:${direcao}deg" aria-label="Bússola indicando vento de ${Math.round(direcao)} graus"><span class="n">N</span><span class="l">L</span><span class="s">S</span><span class="o">O</span><i></i></span><span><b>Vento de ${Math.round(direcao)}° · ${velocidade} km/h</b><small>20°47'05.40&quot;S · 49°30'31.57&quot;W</small></span></figcaption></figure>`;grade.insertAdjacentElement("afterend",mapa)}
+    function adicionarFontesMeteorologicas(){const noticias=document.querySelector(".noticias"),lista=noticias?.querySelector("#lista-noticias");if(!noticias||!lista||noticias.querySelector(".fontes-meteorologicas"))return;const fontes=document.createElement("aside");fontes.className="fontes-meteorologicas";fontes.setAttribute("aria-label","Fontes das informações meteorológicas");fontes.innerHTML='<strong>Fontes meteorológicas</strong><a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo · previsão</a><a href="https://aviationweather.gov/" target="_blank" rel="noopener noreferrer">AviationWeather.gov · METAR</a>';lista.before(fontes)}
+    async function adicionarMetarSaoJose(){const ancora=document.querySelector("#mapa-operacional")||document.querySelector(".grade");if(!ancora||document.querySelector("#metar-sao-jose"))return;const card=document.createElement("section");card.id="metar-sao-jose";card.className="metar-sao-jose";card.setAttribute("aria-live","polite");card.innerHTML='<header class="metar-sao-jose-cabeca"><div><h2>METAR · São José do Rio Preto</h2><p>Observação aeronáutica mais recente.</p></div></header><p class="metar-sao-jose-codigo">Consultando a REDEMET…</p>';ancora.insertAdjacentElement("afterend",card);try{const r=await fetch(`metar-sao-jose.json?at=${Date.now()}`);if(!r.ok)throw Error();const dado=await r.json(),momento=dado.validade?new Intl.DateTimeFormat("pt-BR",{dateStyle:"short",timeStyle:"short",timeZone:"America/Sao_Paulo"}).format(new Date(`${dado.validade.replace(" ","T")}-03:00`)):"horário não informado",metar=(dado.metar||"METAR indisponível").replace(/^METAR\s+\S+\s+/,"METAR ");card.innerHTML=`<header class="metar-sao-jose-cabeca"><div><h2>METAR · São José do Rio Preto</h2><p>Observação aeronáutica mais recente.</p></div><time datetime="${dado.validade||""}">Atualizado: ${momento}</time></header><p class="metar-sao-jose-codigo">${metar}</p><p class="metar-sao-jose-rodape">Fonte: <a href="https://redemet.decea.mil.br" target="_blank" rel="noopener noreferrer">${dado.fonte||"REDEMET · DECEA"}</a></p>`}catch{card.querySelector(".metar-sao-jose-codigo").textContent="Não foi possível consultar o METAR agora."}}
+    function traduzirMetar(mensagem){const campos=[],vento=mensagem.match(/\b(\d{3}|VRB)(\d{2,3})(?:G(\d{2,3}))?KT\b/),temperatura=mensagem.match(/\b(M?\d{2})\/(M?\d{2})\b/),pressao=mensagem.match(/\bQ(\d{4})\b/),nuvens=[...mensagem.matchAll(/\b(FEW|SCT|BKN|OVC)(\d{3})\b/g)];const grau=valor=>Number(valor.replace("M",""))*(valor.startsWith("M")?-1:1);if(vento){const direcao=vento[1]==="VRB"?"variável":`${vento[1]}°`,velocidade=Math.round(Number(vento[2])*1.852),rajada=vento[3]?` · rajadas ${Math.round(Number(vento[3])*1.852)} km/h`:"";campos.push(["Vento",`${direcao} · ${velocidade} km/h${rajada}`])}if(/\bCAVOK\b/.test(mensagem))campos.push(["Visibilidade","≥ 10 km · céu operacionalmente limpo"]);else if(/\b9999\b/.test(mensagem))campos.push(["Visibilidade","≥ 10 km"]);else{const visibilidade=mensagem.match(/\b(\d{4})\b/);if(visibilidade)campos.push(["Visibilidade",`${Number(visibilidade[1]) / 1000} km`])}if(temperatura)campos.push(["Temperatura",`${grau(temperatura[1])}°C · orvalho ${grau(temperatura[2])}°C`]);if(pressao)campos.push(["Pressão (QNH)",`${pressao[1]} hPa`]);if(nuvens.length){const nomes={FEW:"poucas",SCT:"dispersas",BKN:"muitas",OVC:"encoberto"};campos.push(["Nuvens",nuvens.map(item=>`${nomes[item[1]]} a ${Number(item[2])*100} ft`).join(" · ")])}return campos.map(([titulo,valor])=>`<div><dt>${titulo}</dt><dd>${valor}</dd></div>`).join("")}
+    async function adicionarMetarSaoJose(){const ancora=document.querySelector("#mapa-operacional")||document.querySelector(".grade");if(!ancora||document.querySelector("#metar-sao-jose"))return;const card=document.createElement("section");card.id="metar-sao-jose";card.className="metar-sao-jose";card.setAttribute("aria-live","polite");card.innerHTML='<header class="metar-sao-jose-cabeca"><div><h2>METAR</h2><p>Observação aeronáutica mais recente.</p></div></header><p class="metar-sao-jose-codigo">Consultando a REDEMET…</p>';ancora.insertAdjacentElement("afterend",card);try{const r=await fetch(`metar-sao-jose.json?at=${Date.now()}`);if(!r.ok)throw Error();const dado=await r.json(),metar=(dado.metar||"METAR indisponível").replace(/^METAR\s+\S+\s+/,"METAR "),traducao=traduzirMetar(dado.metar||"");card.innerHTML=`<header class="metar-sao-jose-cabeca"><div><h2>METAR</h2><p>Observação aeronáutica mais recente.</p></div></header><p class="metar-sao-jose-codigo">${metar}</p><dl class="metar-traducao">${traducao}</dl><p class="metar-sao-jose-rodape">Fonte: <a href="https://redemet.decea.mil.br" target="_blank" rel="noopener noreferrer">${dado.fonte||"REDEMET · DECEA"}</a></p>`}catch{card.querySelector(".metar-sao-jose-codigo").textContent="Não foi possível consultar o METAR agora."}}
+    function adicionarRadarClube(){const ancora=document.querySelector("#metar-sao-jose")||document.querySelector("#mapa-operacional")||document.querySelector(".grade");if(!ancora||document.querySelector("#radar-clube"))return;const card=document.createElement("section");card.id="radar-clube";card.className="radar-clube";const radar="https://embed.windy.com/embed2.html?lat=-20.7848&lon=-49.5088&detailLat=-20.7848&detailLon=-49.5088&width=650&height=450&zoom=10&level=surface&overlay=rain&menu=&message=true&marker=true&calendar=now&pressure=&type=map&location=coordinates&detail=&metricWind=km%2Fh&metricTemp=%C2%B0C&radarRange=-1";card.innerHTML=`<header class="radar-clube-cabeca"><div><h2>Radar de chuva</h2><p>Área do Clube 14 BIS · Mirassol</p></div><a href="https://www.windy.com/pt/-Radar-meteorol%C3%B3gico-radar?radar,-20.7848,-49.5088,10" target="_blank" rel="noopener noreferrer">Ver radar completo</a></header><div id="radar-clube-mapa" class="radar-mapa"><iframe src="${radar}" title="Radar meteorológico centrado no Clube 14 BIS" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><p class="radar-legenda">Radar de precipitação centrado no Clube 14 BIS. O mapa é exibido dentro deste painel.</p>`;ancora.insertAdjacentElement("afterend",card)}
+    new MutationObserver(mudancas=>{const conteudoAlterado=mudancas.some(m=>m.target.id==="conteudo"||[...m.addedNodes].some(no=>no.nodeType===1&&(no.id==="conteudo"||no.querySelector?.("#conteudo"))));if(conteudoAlterado)setTimeout(()=>{organizarCartoesSolares();substituirIconesSvg();adicionarCamadasClima();adicionarPainelAviacao();adicionarMapaOperacional();adicionarMetarSaoJose();adicionarRadarClube();adicionarFontesMeteorologicas();posicionarCondicoes();adicionarDirecaoVento();mesclarInformacoesVento();substituirIconesMeteocons();removerResumoBussolaAviacao();adicionarIconesAviacao();padronizarHoras()},30)}).observe(document.body,{childList:true,subtree:true});
+    atualizarSaudacao();setInterval(atualizarSaudacao,1000);setInterval(()=>aplicarPaleta(codigoAtual),60000);setInterval(carregar,900000);carregar();
+    async function carregar(){const url="https://api.open-meteo.com/v1/forecast?latitude=-20.784833&longitude=-49.508769&current=temperature_2m,apparent_temperature,weather_code,wind_speed_10m,wind_direction_10m,wind_gusts_10m,visibility&hourly=temperature_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,uv_index_max,sunrise,sunset&timezone=America%2FSao_Paulo&forecast_days=7";try{const r=await fetch(url);if(!r.ok)throw Error();renderizar(await r.json())}catch{document.querySelector("#conteudo").innerHTML='<div>⚠️</div><h2>Não foi possível atualizar o clima</h2><p>Verifique sua conexão e tente consultar as condições novamente.</p><button class="tentar" type="button" onclick="carregar()">Tentar novamente</button>'}}
+  </script>
+</body>
 </html>

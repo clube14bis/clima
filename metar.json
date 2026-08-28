@@ -1,0 +1,17 @@
+{
+  "reportTime": "2026-08-27T15:00:00.000Z",
+  "temp": 26,
+  "dewp": 16,
+  "wdir": 30,
+  "wspd": 4,
+  "visib": "6+",
+  "altim": 1016,
+  "rawOb": "METAR 271500Z 03004KT CAVOK 26/16 Q1016",
+  "lat": -20.817,
+  "lon": -49.407,
+  "name": "São José do Rio Preto — SP",
+  "cover": "CAVOK",
+  "fltCat": "VFR",
+  "distanceKm": 11.2,
+  "source": "AviationWeather.gov"
+}
