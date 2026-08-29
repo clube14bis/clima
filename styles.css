@@ -442,4 +442,5 @@
     .dia-cabeca .data-dia { color: #3a6983; font-size: 1.5em; line-height: 1; }
     /* Tipografia Apple e apresentação unificada em maiúsculas. */
     :root, button, input, textarea, select { font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-    body { text-transform: uppercase; }
+    body { text-transform: none; }
+    h1, h2, h3, .condicao, .temperatura, .numero, .tag.forte, .saudacao, .hora strong, .hora b, .dia-cabeca strong, .temperaturas-dia span, .detalhe-dia b, .metar-sao-jose-codigo, .metar-traducao dd, .mapa-vento b { text-transform: uppercase; }
