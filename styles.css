@@ -437,3 +437,6 @@
     .fontes-meteorologicas { margin: 16px 0 0; padding: 16px 18px; border-radius: 20px; background: #fff; box-shadow: 0 8px 20px #143e5b12; }
     .fontes-meteorologicas strong { width: 100%; font-size: .9rem; }
     .fontes-meteorologicas a, .fontes-meteorologicas span { padding: 6px 9px; border-radius: 999px; background: #edf7fb; }
+    /* Dia por extenso e data destacada na previsão. */
+    .dia-cabeca strong { display: grid; gap: 2px; text-transform: capitalize; }
+    .dia-cabeca .data-dia { color: #3a6983; font-size: 1.5em; line-height: 1; }
