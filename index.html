@@ -451,6 +451,13 @@
     .colunas .dia { flex: 0 0 clamp(250px, 28vw, 298px); min-width: 0; }
     .colunas > .situacao { margin-top: 15px; }
     @media (max-width: 600px) { .colunas .painel:has(.dias) { padding: 16px; }.colunas .dia { flex-basis: min(264px, 78vw); }.colunas .dias { padding-bottom: 14px; } }
+    /* Marca, saudação e relógio reunidos em um único painel. */
+    .marca { padding: 12px 22px 15px; border: 1px solid #d8e7ef; border-radius: 28px; background: #fff; box-shadow: 0 8px 20px #143e5b18; }
+    .marca img { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+    .saudacao { margin-top: 7px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+    .saudacao time { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+    .relogio { display: inline-block; inline-size: 8ch; font-variant-numeric: tabular-nums; text-align: center; white-space: nowrap; }
+    @media (max-width: 430px) { .marca { padding: 10px 14px 12px; border-radius: 24px; }.saudacao time { flex-wrap: wrap; gap: 4px 7px; }.data-cabecalho { width: 100%; } }
   </style>
 </head>
 <body>
@@ -466,7 +473,7 @@
     const dia=d=>new Intl.DateTimeFormat("pt-BR",{weekday:"short",day:"2-digit"}).format(new Date(d+"T12:00:00"));
     const hora=d=>new Intl.DateTimeFormat("pt-BR",{hour:"2-digit",minute:"2-digit"}).format(new Date(d));
     const rumo=g=>["Norte","Nordeste","Leste","Sudeste","Sul","Sudoeste","Oeste","Noroeste"][Math.round(g/45)%8];
-    function atualizarSaudacao(){const agora=new Date(),h=agora.getHours(),texto=h<12?"Bom dia":h<18?"Boa tarde":"Boa noite",horario=new Intl.DateTimeFormat("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(agora),data=new Intl.DateTimeFormat("pt-BR",{weekday:"long",day:"2-digit",month:"long"}).format(agora),el=document.querySelector("#saudacao");if(el)el.innerHTML=`${texto}! <time datetime="${agora.toISOString()}">· ${horario} · ${data}</time>`}
+    function atualizarSaudacao(){const agora=new Date(),h=agora.getHours(),texto=h<12?"Bom dia":h<18?"Boa tarde":"Boa noite",horario=new Intl.DateTimeFormat("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"}).format(agora),data=new Intl.DateTimeFormat("pt-BR",{weekday:"long",day:"2-digit",month:"long"}).format(agora),el=document.querySelector("#saudacao");if(el)el.innerHTML=`${texto}! <time datetime="${agora.toISOString()}"><span class="relogio">${horario}</span><span>·</span><span class="data-cabecalho">${data}</span></time>`}
     let codigoAtual=0,codigoAnterior=null,condicoesAtuais={};
     function horarioCena(data=new Date()){const horarios=["0600","0900","1200","1500","1730","1800","1900","2100"],minutos=data.getHours()*60+data.getMinutes();return horarios.reduce((melhor,hora)=>{const valor=Number(hora.slice(0,2))*60+Number(hora.slice(2)),atual=Number(melhor.slice(0,2))*60+Number(melhor.slice(2));return Math.abs(valor-minutos)<Math.abs(atual-minutos)?hora:melhor})}
     function condicaoCena(codigo,atual={}){if(codigo>=96)return"tempestade-raios";if(codigo>=95)return"tempestade";if(codigo===45||codigo===48)return atual.visibility!=null&&atual.visibility<1000?"neblina-intensa":"neblina";if((atual.temperature_2m||0)>=35)return"calor-extremo";if(codigo>=65||codigo>=80)return"chuva-moderada";if(codigo>=51)return"chuva-fraca";if(codigoAnterior>=95)return"pos-tempestade";if(codigoAnterior>=51)return"pos-chuva";if(codigo===3)return"muito-nublado";if(codigo===1||codigo===2)return"parcialmente-nublado";return"ensolarado"}
