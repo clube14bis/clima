@@ -489,3 +489,4 @@
     .mini-bussola .ponteiro-bussola path:first-child { fill: #efae2e; stroke: #c98514; }
     .mini-bussola .ponteiro-bussola path:last-child { fill: #d8eef6; stroke: #4d9dbd; }
     @media (prefers-reduced-motion: reduce) { .mini-bussola .ponteiro-bussola { transition: none; } }
+    .mapa-vento { justify-content: center; text-align: center; }
