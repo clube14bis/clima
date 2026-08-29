@@ -443,6 +443,14 @@
     @media (max-width: 520px) { .metar-sao-jose { padding: 17px; }.metar-sao-jose-cabeca { display: block; }.metar-sao-jose time { display: block; margin-top: 7px; text-align: left; } }
     .radar-clube { margin-top: 28px; overflow: hidden; border: 1px solid #c7dfe9; border-radius: 22px; background: #fff; box-shadow: 0 10px 24px #123d5a12; }.radar-clube-cabeca { display: flex; align-items: end; justify-content: space-between; gap: 14px; padding: 18px 20px; }.radar-clube h2 { color: #173e56; font-size: clamp(1.2rem, 3vw, 1.45rem); }.radar-clube-cabeca p { margin-top: 4px; color: #5b7a8d; font-size: .84rem; }.radar-clube-cabeca a { color: #176a92; font-size: .78rem; font-weight: 750; text-decoration: none; white-space: nowrap; }.radar-mapa { position: relative; width: 100%; height: clamp(300px, 58vw, 480px); overflow: hidden; background: #dcebf1; }.radar-mapa iframe { display: block; width: 100%; height: 100%; border: 0; pointer-events: none; }.radar-legenda { padding: 11px 18px; border-top: 1px solid #d7e7ed; color: #5a788a; font-size: .76rem; }
     @media (max-width: 520px) { .radar-clube-cabeca { display: block; padding: 16px; }.radar-clube-cabeca a { display: inline-block; margin-top: 9px; }.radar-mapa { height: 330px; }.radar-legenda { padding: 10px 16px; } }
+    /* Previsão semanal: painel inteiro, rolagem interna e cartões sempre alinhados. */
+    .colunas { grid-template-columns: minmax(0, 1fr); }
+    .colunas > .painel { min-width: 0; }
+    .colunas > .painel:has(.dias) { width: 100%; overflow: visible; }
+    .colunas .dias { width: 100%; padding: 2px 2px 16px; scroll-padding-inline: 2px; }
+    .colunas .dia { flex: 0 0 clamp(250px, 28vw, 298px); min-width: 0; }
+    .colunas > .situacao { margin-top: 15px; }
+    @media (max-width: 600px) { .colunas .painel:has(.dias) { padding: 16px; }.colunas .dia { flex-basis: min(264px, 78vw); }.colunas .dias { padding-bottom: 14px; } }
   </style>
 </head>
 <body>
