@@ -463,3 +463,20 @@
     .fluxo-vento span:nth-child(even) { opacity: .56; }
     @keyframes fluxo-vento-mapa { to { transform: translateX(700%); } }
     @media (prefers-reduced-motion: reduce) { .fluxo-vento span { animation: none; transform: translateX(180%); } }
+    /* Leitura do vento centralizada e ampliada para consulta rápida no campo. */
+    .cartao-vento-completo { grid-template-columns: 1fr; justify-items: center; row-gap: 12px; padding: 22px; text-align: center; }
+    .cartao-vento-completo .mini-bussola { width: 59px; height: 59px; }
+    .cartao-vento-completo .mini-bussola .meteocon { width: 43px; height: 43px; }
+    .cartao-vento-completo .direcao-vento b { font-size: 1.4rem; }
+    .cartao-vento-completo .direcao-vento small { margin-top: 5px; font-size: 1.06rem; }
+    .cartao-vento-completo .dados-vento { width: min(100%, 390px); gap: 12px; }
+    .cartao-vento-completo .dados-vento span { padding: 11px 12px; font-size: .98rem; }
+    .cartao-vento-completo .dados-vento b { margin-top: 4px; font-size: 1.26rem; }
+    @media (max-width: 520px) {
+      .cartao-vento-completo { padding: 20px 16px; }
+      .cartao-vento-completo .direcao-vento b { font-size: 1.28rem; }
+      .cartao-vento-completo .direcao-vento small { font-size: .98rem; }
+      .cartao-vento-completo .dados-vento { gap: 8px; }
+      .cartao-vento-completo .dados-vento span { padding: 10px 7px; font-size: .88rem; }
+      .cartao-vento-completo .dados-vento b { font-size: 1.12rem; }
+    }
