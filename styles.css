@@ -485,7 +485,7 @@
     .mini-bussola svg { width: 100%; height: 100%; overflow: visible; fill: none; stroke: #1a7aa4; stroke-width: 1.55; }
     .mini-bussola text { fill: #285e7b; stroke: none; font-size: 4.6px; font-weight: 850; }
     .mini-bussola .marcas { stroke: #78b8d2; stroke-linecap: round; }
-    .mini-bussola .ponteiro-bussola { transform-box: view-box; transform-origin: 20px 20px; transform: rotate(var(--vento)); transition: transform .65s ease-out; }
+    .mini-bussola .ponteiro-bussola { transform-box: view-box; transform-origin: 20px 20px; transform: rotate(var(--vento)) scale(.78); transition: transform .65s ease-out; }
     .mini-bussola .ponteiro-bussola path:first-child { fill: #efae2e; stroke: #c98514; }
     .mini-bussola .ponteiro-bussola path:last-child { fill: #d8eef6; stroke: #4d9dbd; }
     @media (prefers-reduced-motion: reduce) { .mini-bussola .ponteiro-bussola { transition: none; } }
