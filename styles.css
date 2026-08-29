@@ -454,15 +454,12 @@
       .grade > .cartao:not(.cartao-vento-completo) .cartao-icone .meteocon { width: 49px; height: 49px; }
     }
     /* Fluxo do vento sobre a referência da pista: a origem acompanha a direção medida. */
-    .mapa-pista { position: relative; overflow: hidden; }
+    .mapa-pista { position: relative; overflow: visible; }
+    .mapa-imagem { position: relative; aspect-ratio: 1380 / 1043; overflow: hidden; background: #d6e6ec; }
+    .mapa-imagem > img { display: block; width: 100%; height: 100%; object-fit: contain; }
     .fluxo-vento { position: absolute; inset: -52%; z-index: 1; overflow: hidden; pointer-events: none; transform: rotate(calc(var(--direcao-vento) + 90deg)); transform-origin: center; }
-    .fluxo-vento span { position: absolute; left: -40%; width: 34%; height: 2px; border-radius: 99px; background: linear-gradient(90deg, transparent, #f7fdff 32%, #66d5f3 72%, transparent); box-shadow: 0 0 8px #2bbfe780; opacity: .78; animation: fluxo-vento-mapa 5.2s linear infinite; }
+    .fluxo-vento span { position: absolute; top: var(--pos); left: -24%; width: 17%; height: 2px; border-radius: 99px; background: linear-gradient(90deg, transparent, #f7fdff 32%, #66d5f3 72%, transparent); box-shadow: 0 0 7px #2bbfe780; opacity: .78; animation: fluxo-vento-mapa 4.6s linear infinite; animation-delay: var(--atraso); }
     .fluxo-vento span::after { position: absolute; top: 50%; right: 3%; width: 7px; height: 7px; border-top: 2px solid #e9fbff; border-right: 2px solid #e9fbff; content: ""; transform: translateY(-50%) rotate(45deg); }
-    .fluxo-vento span:nth-child(1) { top: 18%; animation-delay: -4.6s; }
-    .fluxo-vento span:nth-child(2) { top: 31%; animation-delay: -1.8s; opacity: .58; }
-    .fluxo-vento span:nth-child(3) { top: 45%; animation-delay: -3.3s; }
-    .fluxo-vento span:nth-child(4) { top: 59%; animation-delay: -.7s; opacity: .62; }
-    .fluxo-vento span:nth-child(5) { top: 73%; animation-delay: -2.5s; }
-    .fluxo-vento span:nth-child(6) { top: 85%; animation-delay: -4s; opacity: .55; }
-    @keyframes fluxo-vento-mapa { to { transform: translateX(440%); } }
+    .fluxo-vento span:nth-child(even) { opacity: .56; }
+    @keyframes fluxo-vento-mapa { to { transform: translateX(700%); } }
     @media (prefers-reduced-motion: reduce) { .fluxo-vento span { animation: none; transform: translateX(180%); } }
