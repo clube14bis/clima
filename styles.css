@@ -444,3 +444,12 @@
     :root, button, input, textarea, select { font-family: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
     body { text-transform: none; }
     h1, h2, h3, .condicao, .temperatura, .numero, .tag.forte, .saudacao, .hora strong, .hora b, .dia-cabeca strong, .temperaturas-dia span, .detalhe-dia b, .metar-sao-jose-codigo, .metar-traducao dd, .mapa-vento b { text-transform: uppercase; }
+    /* Leituras do tempo centralizadas, com ícones mais fáceis de identificar. */
+    .grade > .cartao:not(.cartao-vento-completo) { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+    .grade > .cartao:not(.cartao-vento-completo) .cartao-icone { width: 64px; height: 64px; border-radius: 19px; font-size: 1.45rem; }
+    .grade > .cartao:not(.cartao-vento-completo) .cartao-icone .meteocon { width: 54px; height: 54px; }
+    .grade > .cartao:not(.cartao-vento-completo) .numero { margin-top: 13px; }
+    @media (max-width: 600px) {
+      .grade > .cartao:not(.cartao-vento-completo) .cartao-icone { width: 58px; height: 58px; }
+      .grade > .cartao:not(.cartao-vento-completo) .cartao-icone .meteocon { width: 49px; height: 49px; }
+    }
