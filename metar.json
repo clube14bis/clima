@@ -1,29 +1,29 @@
 {
   "icaoId": "SBSR",
-  "receiptTime": "2026-09-10T13:10:33.842Z",
-  "obsTime": 1789045200,
-  "reportTime": "2026-09-10T13:00:00.000Z",
-  "temp": 26,
+  "receiptTime": "2026-09-10T17:10:31.726Z",
+  "obsTime": 1789059600,
+  "reportTime": "2026-09-10T17:00:00.000Z",
+  "temp": 31,
   "dewp": 20,
-  "wdir": 10,
-  "wspd": 8,
+  "wdir": 320,
+  "wspd": 4,
   "visib": "6+",
-  "altim": 1016,
+  "altim": 1013,
   "qcField": 0,
   "metarType": "METAR",
-  "rawOb": "METAR SBSR 101300Z 01008KT 9999 FEW030 BKN070 26/20 Q1016",
+  "rawOb": "METAR SBSR 101700Z 32004KT 9999 FEW035 SCT070 31/20 Q1013",
   "lat": -20.817,
   "lon": -49.407,
   "elev": 537,
   "name": "Sao Jose do Rio Preto Arpt, SP, BR",
-  "cover": "BKN",
+  "cover": "SCT",
   "clouds": [
     {
       "cover": "FEW",
-      "base": 3000
+      "base": 3500
     },
     {
-      "cover": "BKN",
+      "cover": "SCT",
       "base": 7000
     }
   ],
