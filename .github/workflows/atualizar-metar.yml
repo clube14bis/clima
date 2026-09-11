@@ -30,11 +30,16 @@ jobs:
             echo "Segredo REDEMET_API_KEY ainda não configurado; mantendo o último METAR publicado."
             exit 0
           fi
-          curl --fail --retry 3 --retry-delay 5 --silent --show-error \
+          if curl --fail --retry 4 --retry-all-errors --retry-delay 5 --connect-timeout 20 --max-time 90 --silent --show-error \
             -H "X-Api-Key: $REDEMET_API_KEY" \
             'https://api-redemet.decea.mil.br/mensagens/metar/SBSR?page_tam=1' \
-            -o redemet-sao-jose.json
-          python3 scripts/atualizar_redemet.py redemet-sao-jose.json metar-sao-jose.json
+            -o redemet-sao-jose.json; then
+            if ! python3 scripts/atualizar_redemet.py redemet-sao-jose.json metar-sao-jose.json; then
+              echo "A resposta da REDEMET não pôde ser processada; mantendo o último METAR publicado."
+            fi
+          else
+            echo "A REDEMET está temporariamente indisponível; mantendo o último METAR publicado."
+          fi
       - name: Salvar nova observação
         run: |
           if git diff --quiet -- metar.json metar-sao-jose.json; then exit 0; fi
