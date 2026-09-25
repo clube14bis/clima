@@ -1,17 +1,17 @@
 {
   "icaoId": "SBSR",
-  "receiptTime": "2026-09-25T07:10:43.732Z",
-  "obsTime": 1790319600,
-  "reportTime": "2026-09-25T07:00:00.000Z",
-  "temp": 21,
+  "receiptTime": "2026-09-25T12:10:37.320Z",
+  "obsTime": 1790337600,
+  "reportTime": "2026-09-25T12:00:00.000Z",
+  "temp": 25,
   "dewp": 18,
-  "wdir": 180,
+  "wdir": 120,
   "wspd": 5,
-  "visib": "6+",
-  "altim": 1013,
+  "visib": 3.73,
+  "altim": 1017,
   "qcField": 0,
   "metarType": "METAR",
-  "rawOb": "METAR SBSR 250700Z 18005KT 9999 FEW040 21/18 Q1013",
+  "rawOb": "METAR SBSR 251200Z 12005KT 6000 FEW045 25/18 Q1017",
   "lat": -20.817,
   "lon": -49.407,
   "elev": 537,
@@ -20,10 +20,10 @@
   "clouds": [
     {
       "cover": "FEW",
-      "base": 4000
+      "base": 4500
     }
   ],
-  "fltCat": "VFR",
+  "fltCat": "MVFR",
   "distanceKm": 11.2,
   "source": "AviationWeather.gov"
 }
