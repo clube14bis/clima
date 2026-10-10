@@ -1,32 +1,23 @@
 {
   "icaoId": "SBSR",
-  "receiptTime": "2026-10-10T17:10:36.466Z",
-  "obsTime": 1791651600,
-  "reportTime": "2026-10-10T17:00:00.000Z",
-  "temp": 28,
-  "dewp": 15,
-  "wdir": 220,
-  "wspd": 15,
+  "receiptTime": "2026-10-10T20:10:45.026Z",
+  "obsTime": 1791662400,
+  "reportTime": "2026-10-10T20:00:00.000Z",
+  "temp": 27,
+  "dewp": 17,
+  "wdir": 230,
+  "wspd": 13,
   "visib": "6+",
-  "altim": 1017,
+  "altim": 1016,
   "qcField": 0,
   "metarType": "METAR",
-  "rawOb": "METAR SBSR 101700Z 22015KT 9999 FEW045 SCT080 28/15 Q1017",
+  "rawOb": "METAR SBSR 102000Z 23013KT CAVOK 27/17 Q1016",
   "lat": -20.817,
   "lon": -49.407,
   "elev": 537,
   "name": "Sao Jose do Rio Preto Arpt, SP, BR",
-  "cover": "SCT",
-  "clouds": [
-    {
-      "cover": "FEW",
-      "base": 4500
-    },
-    {
-      "cover": "SCT",
-      "base": 8000
-    }
-  ],
+  "cover": "CAVOK",
+  "clouds": [],
   "fltCat": "VFR",
   "distanceKm": 11.2,
   "source": "AviationWeather.gov"
