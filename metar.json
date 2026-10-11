@@ -1,17 +1,17 @@
 {
   "icaoId": "SBSR",
-  "receiptTime": "2026-10-11T11:10:45.662Z",
-  "obsTime": 1791716400,
-  "reportTime": "2026-10-11T11:00:00.000Z",
-  "temp": 23,
-  "dewp": 18,
-  "wdir": 100,
-  "wspd": 3,
+  "receiptTime": "2026-10-11T16:10:37.112Z",
+  "obsTime": 1791734400,
+  "reportTime": "2026-10-11T16:00:00.000Z",
+  "temp": 32,
+  "dewp": 17,
+  "wdir": 230,
+  "wspd": 2,
   "visib": "6+",
-  "altim": 1017,
+  "altim": 1015,
   "qcField": 0,
   "metarType": "METAR",
-  "rawOb": "METAR SBSR 111100Z 10003KT 9999 FEW045 SCT090 23/18 Q1017",
+  "rawOb": "METAR SBSR 111600Z 23002KT 9999 FEW045 SCT080 32/17 Q1015",
   "lat": -20.817,
   "lon": -49.407,
   "elev": 537,
@@ -24,7 +24,7 @@
     },
     {
       "cover": "SCT",
-      "base": 9000
+      "base": 8000
     }
   ],
   "fltCat": "VFR",
