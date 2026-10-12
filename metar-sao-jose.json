@@ -1,7 +1,7 @@
 {
   "aeroporto": "São José do Rio Preto — SP",
-  "validade": "2026-10-12 00:00:00",
-  "recebimento": "2026-10-11 23:55:09",
-  "metar": "METAR SBSR 120000Z 20008KT 170V250 CAVOK 23/19 Q1016=",
+  "validade": "2026-10-12 06:00:00",
+  "recebimento": "2026-10-12 05:55:07",
+  "metar": "METAR SBSR 120600Z 20003KT 150V230 9999 -RA BKN020 21/19 Q1014=",
   "fonte": "REDEMET · DECEA"
 }
