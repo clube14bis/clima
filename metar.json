@@ -1,17 +1,17 @@
 {
   "icaoId": "SBSR",
-  "receiptTime": "2026-10-25T17:10:53.633Z",
-  "obsTime": 1792947600,
-  "reportTime": "2026-10-25T17:00:00.000Z",
-  "temp": 26,
+  "receiptTime": "2026-10-25T19:11:03.429Z",
+  "obsTime": 1792954800,
+  "reportTime": "2026-10-25T19:00:00.000Z",
+  "temp": 27,
   "dewp": 20,
-  "wdir": 290,
+  "wdir": 280,
   "wspd": 7,
   "visib": "6+",
-  "altim": 1013,
+  "altim": 1009,
   "qcField": 0,
   "metarType": "METAR",
-  "rawOb": "METAR SBSR 251700Z 29007KT 9999 SCT030 BKN070 26/20 Q1013",
+  "rawOb": "METAR SBSR 251900Z 28007KT 9999 SCT030 FEW035TCU BKN070 27/20 Q1009",
   "lat": -20.817,
   "lon": -49.407,
   "elev": 537,
@@ -21,6 +21,10 @@
     {
       "cover": "SCT",
       "base": 3000
+    },
+    {
+      "cover": "FEW",
+      "base": 3500
     },
     {
       "cover": "BKN",
